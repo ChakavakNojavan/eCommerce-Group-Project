@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function App() {
   const [bacon, setBacon] = useState(null);
 
   useEffect(() => {
-    fetch('/bacon')
-      .then(res => res.json())
-      .then(data => setBacon(data));
+    fetch("/bacon")
+      .then((res) => res.json())
+      .then((data) => setBacon(data));
   }, []);
 
   return <div>{bacon ? bacon : `...where's my stuff?...`}</div>;
@@ -15,3 +15,6 @@ function App() {
 //this is jon 
 
 export default App;
+
+//this is a comment by chaka
+//oops let's try againx2
