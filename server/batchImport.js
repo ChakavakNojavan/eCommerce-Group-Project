@@ -1,4 +1,5 @@
 const items = require("./data/items.json");
+const companies = require("./data/companies.json");
 
 const { MongoClient, Db } = require("mongodb");
 
@@ -18,6 +19,7 @@ try {
     const db = client.db("shop")
 
     await db.collection("watches").insertMany(items)
+    await db.collection("companies").insertMany(companies)
     console.log("great success, very nice")   
 }
 catch (error) {
