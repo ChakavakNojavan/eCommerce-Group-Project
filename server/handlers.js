@@ -1,4 +1,3 @@
-//comment by chaka
 module.exports = (itemsCollection, cartCollection) => {
   const viewProducts = async (req, res) => {
     console.log("Handling request to view products...");
@@ -16,6 +15,7 @@ module.exports = (itemsCollection, cartCollection) => {
     const id = parseInt(req.params.id);
     try {
       const item = await itemsCollection.findOne({ _id: id });
+      console.log("ID:", id);
 
       if (item) {
         res.json(item);
@@ -31,15 +31,16 @@ module.exports = (itemsCollection, cartCollection) => {
     const id = parseInt(req.params.id);
     const item = await itemsCollection.findOne({ _id: id });
 
+    console.log("ID:", id);
+
     if (!item) {
       res.status(404).json({ message: "Product not found." });
       return;
     }
-
     const cartItem = await cartCollection.findOne({ _id: id });
 
     if (cartItem) {
-      await cartCollection.updateOne({ id }, { $inc: { quantity: 1 } });
+      await cartCollection.updateOne({ _id: id }, { $inc: { quantity: 1 } });
       res.status(201).json({ ...cartItem, quantity: cartItem.quantity + 1 });
     } else {
       const newItem = { ...item, quantity: 1 };
@@ -78,16 +79,21 @@ module.exports = (itemsCollection, cartCollection) => {
     const id = parseInt(req.params.id);
     const { quantity } = req.body;
 
-    if (isNaN(quantity) || quantity < 1) {
+    if (isNaN(quantity) || quantity < 0) {
       res.status(400).json({ message: "Invalid quantity value." });
       return;
     }
 
-    const cartItem = await cartCollection.findOne({ id });
+    const cartItem = await cartCollection.findOne({ _id: id });
 
     if (cartItem) {
-      await cartCollection.updateOne({ _id: id }, { $set: { quantity } });
-      res.json({ ...cartItem, quantity });
+      if (quantity === 0) {
+        await cartCollection.deleteOne({ _id: id });
+        res.status(204).end();
+      } else {
+        await cartCollection.updateOne({ _id: id }, { $set: { quantity } });
+        res.json({ ...cartItem, quantity });
+      }
     } else {
       res.status(404).json({ message: "Product not found in cart." });
     }

@@ -1,5 +1,6 @@
-import watch from "./assets/watch.jpg";
+
 import styled from "styled-components";
+
 
 const About = () => {
   const handleSubmit = (e) => {
@@ -8,7 +9,7 @@ const About = () => {
   return (
     <>
       <Wrapper>
-        <Img src={watch} alt="a statue of a man selling watches" />
+        <Img src="watch.jpg" alt="a statue of a man selling watches" />
         <h2>Chroneos</h2>
         <P>
           Chroneos is a premier watch shop that offers a diverse collection of

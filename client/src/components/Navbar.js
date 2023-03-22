@@ -1,59 +1,51 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { FaShoppingCart } from "react-icons/fa";
 
-import Searchbar from "./Searchbar";
-import logo from "./assets/logo.png";
+// import Searchbar from "./Searchbar";
+// import logo from "./assets/logo.png";
 
 const Navbar = () => {
   return (
-    <NavWrapper>
-      <NavbarLeft>
-        <NavItem>
-          <StyledLink to="/products">Products</StyledLink>
-        </NavItem>
-        <Searchbar />
-      </NavbarLeft>
-      <li>
-        <StyledLink exact to="/">
-          <StyledLogo src={logo} alt="logo" />
-        </StyledLink>
-      </li>
-      <NavbarRight>
-        <NavItem>
-          <StyledLink exact to="/login">
-            Account
-          </StyledLink>
-        </NavItem>
-        <NavItem>
-          <StyledLink exact to="/cart">
-            Cart
-          </StyledLink>
-        </NavItem>
-      </NavbarRight>
-    </NavWrapper>
+    <>
+      <NavWrapper>
+        <NavLinkItem to="/">
+          <img src="chroneos.png" alt="" />
+        </NavLinkItem>
+        <input type="text" />
+        <NavLinkItem to="/">
+          <h2>Home</h2>
+        </NavLinkItem>
+        <NavLinkItem to="/products">
+          <h2>Products</h2>
+        </NavLinkItem>
+        <NavLinkItem to="/cart">
+          <Cart />
+        </NavLinkItem>
+      </NavWrapper>
+    </>
   );
 };
 
 export default Navbar;
-
+const Cart = styled(FaShoppingCart)`
+  &:hover {
+    color: #fe7f2d;
+  }
+`;
 const NavWrapper = styled.nav`
   display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
+  justify-content: space-evenly;
+  padding: 10px 0px;
   margin-bottom: 25px;
-  background-color: #f1f1f1;
+  background-color: rgb(241, 241, 241);
+  align-items: center;
 `;
 
-const StyledLogo = styled.img`
-  position: absolute;
-  left: calc(50vw - 73px);
-  top: 18px;
-  height: 28px;
-  z-index: 10;
-`;
-
-const NavItem = styled.li`
+const NavLinkItem = styled(NavLink)`
+  text-decoration: none;
+  color: #233d4d;
   .active {
     font-weight: bold;
     text-decoration: underline;
@@ -61,19 +53,4 @@ const NavItem = styled.li`
   &:hover {
     text-decoration: underline;
   }
-`;
-
-const NavbarLeft = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const NavbarRight = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const StyledLink = styled(NavLink)`
-  margin: auto 30px;
-  color: #dadada;
 `;
