@@ -1,31 +1,64 @@
-'use strict';
+"use strict";
+console.log("Starting server...");
 
-const express = require('express');
-const morgan = require('morgan');
+const { MongoClient } = require("mongodb");
+require("dotenv").config();
 
-const PORT = 4000;
+const uri = process.env.MONGO_URI;
+(async () => {
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  await client.connect();
 
-express()
-  .use(function(req, res, next) {
-    res.header(
-      'Access-Control-Allow-Methods',
-      'OPTIONS, HEAD, GET, PUT, POST, DELETE'
-    );
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
-    );
-    next();
-  })
-  .use(morgan('tiny'))
-  .use(express.static('./server/assets'))
-  .use(express.json())
-  .use(express.urlencoded({ extended: false }))
-  .use('/', express.static(__dirname + '/'))
+  const db = client.db("shop");
+  const itemsCollection = db.collection("watches");
+  const cartCollection = db.collection("cart");
 
-  // REST endpoints?
-  .get('/bacon', (req, res) => res.status(200).json('🥓'))
+  const handlers = require("./handlers")(itemsCollection, cartCollection);
+  const express = require("express");
+  const morgan = require("morgan");
 
-  .listen(PORT, () => console.info(`Listening on port ${PORT}`));
+  const PORT = 4000;
 
+  express()
+    .use(function (req, res, next) {
+      res.header(
+        "Access-Control-Allow-Methods",
+        "OPTIONS, HEAD, GET, PUT, POST, DELETE"
+      );
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
+      next();
+    })
+    .use(morgan("tiny"))
+    .use(express.static("./server/assets"))
+    .use(express.json())
+    .use(express.urlencoded({ extended: false }))
+    .use("/", express.static(__dirname + "/"))
 
+    // REST endpoints?
+    .get("/api/products", (req, res, next) => {
+      console.log("Handling request to view products...");
+      handlers.viewProducts(req, res, next);
+    })
+    .get("/api/products/:id", (req, res) =>
+      handlers.viewSingleProduct(req, res)
+    )
+    .get("/api/cart", (req, res) => handlers.viewShoppingCart(req, res))
+    .post("/api/cart/:_id", (req, res) => handlers.addToCart(req, res))
+    .delete("/api/cart", (req, res) => handlers.emptyShoppingCart(req, res))
+    .delete("/api/cart/:_id", (req, res) =>
+      handlers.deleteSingleProduct(req, res)
+    )
+    .patch("/api/cart/:_id", (req, res) => handlers.updateQuantity(req, res))
+    .listen(PORT, () => console.info(`Listening on port ${PORT}`));
+  process.on("SIGINT", async () => {
+    console.log("Closing server...");
+    await client.close();
+    process.exit();
+  });
+})();
