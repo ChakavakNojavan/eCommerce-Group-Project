@@ -3,9 +3,10 @@ import About from "./About";
 import SingleProduct from "./SingleProduct";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
-import { HomePage } from "./Homepage";
-import { Products } from "./Products";
-import { Cart } from "./ShoppingCart";
+import HomePage from "./Homepage";
+import Products from "./Products";
+import Cart from "./ShoppingCart";
+
 const App = () => {
   return (
     //all the routes can change, I just put them as place holders, as well as the elements!
