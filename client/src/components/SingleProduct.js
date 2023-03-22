@@ -1,5 +1,3 @@
-import "./styles.css";
-import wtachtest from "/imgs/wtachtest.jpg"
 import styled from "styled-components";
 
 const SingleProduct = () => {
@@ -9,7 +7,7 @@ return (
     <Wrapper>
 
         <div>
-            <WatchImg src={wtachtest} alt="watch test" /> 
+            <p>this is an img</p> 
         </div>
 
     <InfoSection>
