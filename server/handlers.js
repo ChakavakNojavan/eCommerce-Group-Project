@@ -1,3 +1,4 @@
+//comment by chaka
 module.exports = (itemsCollection, cartCollection) => {
   const viewProducts = async (req, res) => {
     console.log("Handling request to view products...");
