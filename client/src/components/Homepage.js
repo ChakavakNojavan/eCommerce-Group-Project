@@ -14,7 +14,6 @@ export const HomePage = () => {
           "Stay Connected, Stay Stylish with Our Smart " <Span>Watches!</Span>
         </Quote>
       </ImgDiv>
-      git checkout -b Mayo_Components git branch
       <NavigationHeadersDiv>
         <NavigationHeaders>Shop by Products</NavigationHeaders>
         <Categories />
