@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import Navbar from "./Navbar";
 import { HomePage } from "./Homepage";
 import { Products } from "./Products";
+import { Cart } from "./ShoppingCart";
 const App = () => {
   return (
     //all the routes can change, I just put them as place holders, as well as the elements!
@@ -13,9 +14,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<About />} />
-        <Route path="/products" element="" />
+        <Route path="/products" element={<Products />} />
         <Route path="/products/:_id" element={<SingleProduct />} />
-        <Route path="/cart" element="" />
+        <Route path="/cart" element={<Cart />} />
         <Route path="" element={<h1>404: Oops!</h1>} />
       </Routes>
       <Footer />
