@@ -49,12 +49,12 @@ const uri = process.env.MONGO_URI;
       handlers.viewSingleProduct(req, res)
     )
     .get("/api/cart", (req, res) => handlers.viewShoppingCart(req, res))
-    .post("/api/cart/:_id", (req, res) => handlers.addToCart(req, res))
+    .post("/api/cart/:id", (req, res) => handlers.addToCart(req, res))
     .delete("/api/cart", (req, res) => handlers.emptyShoppingCart(req, res))
-    .delete("/api/cart/:_id", (req, res) =>
+    .delete("/api/cart/:id", (req, res) =>
       handlers.deleteSingleProduct(req, res)
     )
-    .patch("/api/cart/:_id", (req, res) => handlers.updateQuantity(req, res))
+    .patch("/api/cart/:id", (req, res) => handlers.updateQuantity(req, res))
     .listen(PORT, () => console.info(`Listening on port ${PORT}`));
   process.on("SIGINT", async () => {
     console.log("Closing server...");
