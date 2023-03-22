@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import Navbar from "./Navbar";
 import { HomePage } from "./Homepage";
 
+
 const App = () => {
   return (
     //all the routes can change, I just put them as place holders, as well as the elements!
