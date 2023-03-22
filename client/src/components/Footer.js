@@ -54,10 +54,14 @@ const Footer = () => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.footer`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  /* position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0; */
 `;
 
 const CompanyInfoContainer = styled.div`
