@@ -129,4 +129,4 @@ margin-bottom: 40px;
 ` 
 
 
-export default SingleProduct
+export default SingleProduct;
