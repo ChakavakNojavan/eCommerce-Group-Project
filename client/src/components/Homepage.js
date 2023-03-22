@@ -110,3 +110,5 @@ const Quote = styled.h1`
     text-shadow: none;
   }
 `;
+
+export default HomePage;
