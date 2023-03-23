@@ -19,7 +19,7 @@ const uri = process.env.MONGO_URI;
   const handlers = require("./handlers")(itemsCollection, cartCollection);
   const express = require("express");
   const morgan = require("morgan");
-
+  const cors = require("cors");
   const PORT = 4000;
 
   express()
@@ -39,7 +39,7 @@ const uri = process.env.MONGO_URI;
     .use(express.json())
     .use(express.urlencoded({ extended: false }))
     .use("/", express.static(__dirname + "/"))
-
+    .use(cors())
     // REST endpoints?
     .get("/api/products", (req, res, next) => {
       console.log("Handling request to view products...");
