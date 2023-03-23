@@ -1,8 +1,19 @@
-module.exports = (itemsCollection, cartCollection) => {
+module.exports = (itemsCollection, cartCollection, brandCollection) => {
   const viewProducts = async (req, res) => {
     console.log("Handling request to view products...");
     try {
       const items = await itemsCollection.find().toArray();
+      console.log("Retrieved items:", items);
+      res.json(items);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Error retrieving products." });
+    }
+  };
+  const viewCompanies = async (req, res) => {
+    console.log("Handling request to view products...");
+    try {
+      const items = await brandCollection.find().toArray();
       console.log("Retrieved items:", items);
       res.json(items);
     } catch (err) {
@@ -113,5 +124,6 @@ module.exports = (itemsCollection, cartCollection) => {
     emptyShoppingCart,
     deleteSingleProduct,
     updateQuantity,
+    viewCompanies
   };
 };
