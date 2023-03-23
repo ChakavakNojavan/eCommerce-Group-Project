@@ -15,8 +15,13 @@ const uri = process.env.MONGO_URI;
   const db = client.db("shop");
   const itemsCollection = db.collection("watches");
   const cartCollection = db.collection("cart");
+  const brandCollection = db.collection("companies");
 
-  const handlers = require("./handlers")(itemsCollection, cartCollection);
+  const handlers = require("./handlers")(
+    itemsCollection,
+    cartCollection,
+    brandCollection
+  );
   const express = require("express");
   const morgan = require("morgan");
   const cors = require("cors");
@@ -48,6 +53,10 @@ const uri = process.env.MONGO_URI;
     .get("/api/products/:id", (req, res) =>
       handlers.viewSingleProduct(req, res)
     )
+    .get("/api/companies", (req, res, next) => {
+      console.log("Handling request to view products...");
+      handlers.viewCompanies(req, res, next);
+    })
     .get("/api/cart", (req, res) => handlers.viewShoppingCart(req, res))
     .post("/api/cart/:id", (req, res) => handlers.addToCart(req, res))
     .delete("/api/cart", (req, res) => handlers.emptyShoppingCart(req, res))
