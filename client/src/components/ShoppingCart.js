@@ -50,6 +50,9 @@ const Button = styled.button`
 `;
 const IncrementButton = styled(Button)`
   margin-left: 0.5rem;
+  &:disabled {
+    opacity: 0.5;
+  }
 `;
 
 const DecrementButton = styled(Button)`
@@ -98,8 +101,9 @@ const Cart = () => {
     dispatch({ type: "REMOVE_ITEM", _id });
   };
 
-  const updateItemQuantity = async (_id, quantity) => {
+  const updateItemQuantity = async (_id, quantity, numInStock) => {
     if (quantity < 0) return;
+    if (quantity > numInStock) return;
     if (quantity === 0) {
       await removeItemFromCart(_id);
     } else {
@@ -117,39 +121,58 @@ const Cart = () => {
       total + parseFloat(item.price.replace("$", "")) * item.quantity,
     0
   );
-
   return (
     <Container>
-      {cart.map((item) => (
-        <CartItem key={item._id}>
-          <ItemInfo>
-            <ItemName>{item.name}</ItemName>
-            <ItemPrice>{item.price}</ItemPrice>
-          </ItemInfo>
-          <QuantityControl>
-            <span>Quantity:</span>
-            <DecrementButton
-              onClick={() => updateItemQuantity(item._id, item.quantity - 1)}
-            >
-              -
-            </DecrementButton>
-            <QuantityInput
-              type="number"
-              value={item.quantity}
-              onChange={(e) =>
-                updateItemQuantity(item._id, parseInt(e.target.value))
-              }
-            />
-            <IncrementButton
-              onClick={() => updateItemQuantity(item._id, item.quantity + 1)}
-            >
-              +
-            </IncrementButton>
-            <Button onClick={() => removeItemFromCart(item._id)}>Remove</Button>
-          </QuantityControl>
-        </CartItem>
-      ))}
-      <TotalPrice>Total: ${totalPrice}</TotalPrice>
+      {cart.map((item) => {
+        console.log(`Max quantity for ${item.name}:`, item.numInStock);
+
+        return (
+          <CartItem key={item._id}>
+            <ItemInfo>
+              <ItemName>{item.name}</ItemName>
+              <ItemPrice>{item.price}</ItemPrice>
+            </ItemInfo>
+            <QuantityControl>
+              <span>Quantity:</span>
+              <DecrementButton
+                onClick={() => updateItemQuantity(item._id, item.quantity - 1)}
+              >
+                -
+              </DecrementButton>
+              <QuantityInput
+                type="number"
+                value={item.quantity}
+                onChange={(e) =>
+                  updateItemQuantity(item._id, parseInt(e.target.value))
+                }
+              />
+              <IncrementButton
+                onClick={() =>
+                  updateItemQuantity(
+                    item._id,
+                    item.quantity + 1,
+                    item.numInStock
+                  )
+                }
+                disabled={item.quantity >= item.numInStock}
+              >
+                +
+              </IncrementButton>
+
+              {item.quantity >= item.numInStock && (
+                <p style={{ color: "red" }}>
+                  Maximum quantity reached for this item.
+                </p>
+              )}
+
+              <Button onClick={() => removeItemFromCart(item._id)}>
+                Remove
+              </Button>
+            </QuantityControl>
+          </CartItem>
+        );
+      })}
+      <TotalPrice>Total: ${totalPrice.toFixed(2)}</TotalPrice>
       <Button>Checkout</Button>
       <Button onClick={emptyCart}>Empty Cart</Button>
     </Container>
