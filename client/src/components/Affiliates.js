@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Loading from "./Loading";
 
 import styled from "styled-components";
 
@@ -17,9 +18,7 @@ const Affiliates = () => {
   return (
     <>
       {!companies ? (
-        <div>
-          <h2>Loading</h2>
-        </div>
+        <Loading />
       ) : (
         <>
           <H2>All Brands</H2>

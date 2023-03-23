@@ -11,7 +11,7 @@ const Navbar = () => {
     <>
       <NavWrapper>
         <NavLinkItem to="/">
-          <img src="chroneos.png" alt="" />
+          <img src="/chroneos.png" alt="" />
         </NavLinkItem>
         <input type="text" />
         <NavLinkItem to="/">
