@@ -20,7 +20,6 @@ const batchImport = async () => {
 
     await db.collection("watches").insertMany(items);
     await db.collection("companies").insertMany(companies);
-    await db.collection("cart").insertMany(cart);
     console.log("great success, very nice");
   } catch (error) {
     console.log(error);
