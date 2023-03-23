@@ -1,6 +1,7 @@
 import React, { useReducer, useEffect } from "react";
 import { cartReducer } from "./CartReducer";
 import styled from "styled-components";
+import Loading from "./Loading";
 const Container = styled.div`
   width: 100%;
   max-width: 600px;
@@ -122,60 +123,68 @@ const Cart = () => {
     0
   );
   return (
-    <Container>
-      {cart.map((item) => {
-        console.log(`Max quantity for ${item.name}:`, item.numInStock);
+    <>
+      {cart.length === 0 ? (
+        <Loading />
+      ) : (
+        <Container>
+          {cart.map((item) => {
+            console.log(`Max quantity for ${item.name}:`, item.numInStock);
 
-        return (
-          <CartItem key={item._id}>
-            <ItemInfo>
-              <ItemName>{item.name}</ItemName>
-              <ItemPrice>{item.price}</ItemPrice>
-            </ItemInfo>
-            <QuantityControl>
-              <span>Quantity:</span>
-              <DecrementButton
-                onClick={() => updateItemQuantity(item._id, item.quantity - 1)}
-              >
-                -
-              </DecrementButton>
-              <QuantityInput
-                type="number"
-                value={item.quantity}
-                onChange={(e) =>
-                  updateItemQuantity(item._id, parseInt(e.target.value))
-                }
-              />
-              <IncrementButton
-                onClick={() =>
-                  updateItemQuantity(
-                    item._id,
-                    item.quantity + 1,
-                    item.numInStock
-                  )
-                }
-                disabled={item.quantity >= item.numInStock}
-              >
-                +
-              </IncrementButton>
+            return (
+              <CartItem key={item._id}>
+                <ItemInfo>
+                  <ItemName>{item.name}</ItemName>
+                  <ItemPrice>{item.price}</ItemPrice>
+                </ItemInfo>
+                <QuantityControl>
+                  <span>Quantity:</span>
+                  <DecrementButton
+                    onClick={() =>
+                      updateItemQuantity(item._id, item.quantity - 1)
+                    }
+                  >
+                    -
+                  </DecrementButton>
+                  <QuantityInput
+                    type="number"
+                    value={item.quantity}
+                    onChange={(e) =>
+                      updateItemQuantity(item._id, parseInt(e.target.value))
+                    }
+                  />
+                  <IncrementButton
+                    onClick={() =>
+                      updateItemQuantity(
+                        item._id,
+                        item.quantity + 1,
+                        item.numInStock
+                      )
+                    }
+                    disabled={item.quantity >= item.numInStock}
+                  >
+                    +
+                  </IncrementButton>
 
-              {item.quantity >= item.numInStock && (
-                <p style={{ color: "red" }}>
-                  Maximum quantity reached for this item.
-                </p>
-              )}
+                  {item.quantity >= item.numInStock && (
+                    <p style={{ color: "red" }}>
+                      Maximum quantity reached for this item.
+                    </p>
+                  )}
 
-              <Button onClick={() => removeItemFromCart(item._id)}>
-                Remove
-              </Button>
-            </QuantityControl>
-          </CartItem>
-        );
-      })}
-      <TotalPrice>Total: ${totalPrice.toFixed(2)}</TotalPrice>
-      <Button>Checkout</Button>
-      <Button onClick={emptyCart}>Empty Cart</Button>
-    </Container>
+                  <Button onClick={() => removeItemFromCart(item._id)}>
+                    Remove
+                  </Button>
+                </QuantityControl>
+              </CartItem>
+            );
+          })}
+          <TotalPrice>Total: ${totalPrice.toFixed(2)}</TotalPrice>
+          <Button>Checkout</Button>
+          <Button onClick={emptyCart}>Empty Cart</Button>
+        </Container>
+      )}
+    </>
   );
 };
 
