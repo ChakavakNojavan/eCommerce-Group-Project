@@ -41,6 +41,7 @@ const NavWrapper = styled.nav`
   margin-bottom: 25px;
   background-color: rgb(241, 241, 241);
   align-items: center;
+  margin: 0;
 `;
 
 const NavLinkItem = styled(NavLink)`
