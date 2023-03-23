@@ -5,15 +5,15 @@ import { facebook } from "react-icons-kit/icomoon/facebook";
 import { instagram } from "react-icons-kit/fa/instagram";
 import { twitter } from "react-icons-kit/fa/twitter";
 import { youtubePlay } from "react-icons-kit/fa/youtubePlay";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   return (
     <Wrapper>
       <div>
         <CompanyInfoContainer>
-          <CompanyTitle>#CHRONEOS</CompanyTitle>
+          <CompanyTitle>CHRONEOS</CompanyTitle>
           <li>support@chroneos.com</li>
-          <li>Call us on</li>
           <li>+1 844 420 6969</li>
           <li>7AM - 4PM, CET Mon - Fri</li>
           <Icons>
@@ -34,19 +34,10 @@ const Footer = () => {
       </div>
       <div>
         <InfoContainer>
-          <Title>CUSTOMER SERVICE</Title>
-          <li>FAQ</li>
-          <li>Returns</li>
-          <li>Contact us</li>
-          <li>Reviews</li>
-        </InfoContainer>
-      </div>
-      <div>
-        <InfoContainer>
-          <Title>#CHRONEOS</Title>
-          <li>Our Blog</li>
-          <li>Contact</li>
-          <li>Our Story</li>
+          <Title>CHRONEOS</Title>
+          <NavLinks to="/about">
+            <li>Our Story</li>
+          </NavLinks>
           <li>Affiliates</li>
         </InfoContainer>
       </div>
@@ -57,45 +48,37 @@ const Footer = () => {
 const Wrapper = styled.footer`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  /* position: absolute;
-  left: 0;
-  bottom: 0;
-  right: 0; */
+  justify-content: space-between;
+  margin-top: 100px;
 `;
 
 const CompanyInfoContainer = styled.div`
   list-style: none;
   li {
     padding: 7px;
-    color: #fff;
-  }
-  li:hover {
-    cursor: default;
+    color: #559ee1;
   }
 `;
 
 const InfoContainer = styled.div`
   list-style: none;
+  text-align: right;
   li {
     padding: 7px;
-    color: #fff;
+    color: #559ee1;
   }
   li:hover {
     cursor: pointer;
-    color: red;
+    color: #fe7f2d;
   }
 `;
 
 const CompanyTitle = styled.div`
   list-style: none;
   padding: 10px;
-  font-size: 40px;
+  font-size: 18px;
   font-weight: 700;
-  color: red;
-  :hover {
-    cursor: default;
-  }
+  color: #233d4d;
 `;
 
 const Title = styled.div`
@@ -103,10 +86,7 @@ const Title = styled.div`
   padding: 10px;
   font-size: 20px;
   font-weight: 700;
-  color: red;
-  :hover {
-    cursor: default;
-  }
+  color: #233d4d;
 `;
 
 const Icons = styled.div`
@@ -116,8 +96,12 @@ const Icons = styled.div`
   width: 200px;
   li :hover {
     cursor: pointer;
-    color: red;
+    color: #fe7f2d;
   }
+`;
+
+const NavLinks = styled(NavLink)`
+  text-decoration: none;
 `;
 
 export default Footer;

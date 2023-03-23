@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-export const HomePage = () => {
+const HomePage = () => {
   const [products, setProducts] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     fetch("/api/products")
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);
-        console.log(data);
       });
   }, [setProducts]);
 
+  const handleClick = (productId) => {
+    navigate(`/products/${productId}`);
+    console.log("you clicked me");
+  };
   return (
     <>
       {!products ? (
@@ -24,19 +29,19 @@ export const HomePage = () => {
               <Span>Watches!</Span>
             </Quote>
           </BackgroundDiv>
-
+          <H2>Featured Products</H2>
           <ImageDiv>
-            <ProductDiv>
+            <ProductDiv onClick={() => handleClick(products[0]._id)}>
               <img src={products[0].imageSrc} alt="" />
               <Price>{products[0].price}</Price>
               <ProductName>{products[0].name}</ProductName>
             </ProductDiv>
-            <ProductDiv>
+            <ProductDiv onClick={() => handleClick(products[1]._id)}>
               <img src={products[1].imageSrc} alt="" />
               <Price>{products[1].price}</Price>
               <ProductName>{products[1].name}</ProductName>
             </ProductDiv>
-            <ProductDiv>
+            <ProductDiv onClick={() => handleClick(products[2]._id)}>
               <img src={products[2].imageSrc} alt="" />
               <Price>{products[2].price}</Price>
               <ProductName>{products[2].name}</ProductName>
@@ -67,17 +72,21 @@ const ImageDiv = styled.div`
 const ProductDiv = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  border: 2px solid #233d4d;
+  padding: 10px;
+  border-radius: 10px;
+  :hover {
+    cursor: pointer;
+  }
 `;
 const ProductName = styled.p`
   width: 9em;
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
 `;
 const Price = styled.p`
-  background-color: white;
-  border-radius: 10px;
+  padding-bottom: 0;
+  margin-bottom: 0;
 `;
 const Span = styled.span`
   color: #fcca46;
@@ -110,5 +119,9 @@ const Quote = styled.h1`
     text-shadow: none;
   }
 `;
-
+const H2 = styled.h2`
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+`;
 export default HomePage;
