@@ -123,8 +123,8 @@ const Cart = () => {
       {cart.map((item) => (
         <CartItem key={item._id}>
           <ItemInfo>
-            <ItemName>{item.name}</ItemName>
-            <ItemPrice>{item.price}</ItemPrice>
+            <ItemName><p>{item.name}</p></ItemName>
+            <ItemPrice><p>{item.price}</p></ItemPrice>
           </ItemInfo>
           <QuantityControl>
             <span>Quantity:</span>
@@ -149,7 +149,7 @@ const Cart = () => {
           </QuantityControl>
         </CartItem>
       ))}
-      <TotalPrice>Total: ${totalPrice}</TotalPrice>
+      <TotalPrice><p>Total: ${totalPrice}</p></TotalPrice>
       <Button>Checkout</Button>
       <Button onClick={emptyCart}>Empty Cart</Button>
     </Container>
