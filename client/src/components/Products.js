@@ -2,11 +2,14 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+import Loading from "./Loading"
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const [watches, setWatches] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [cart, setCart] = useState([]);
+  const navigate = useNavigate()
   
 
   useEffect(() => {
@@ -31,6 +34,7 @@ const Products = () => {
 
   const handleSubmit = (event, item) => {
     event.preventDefault();
+    event.stopPropagation();
     fetch(`/api/cart/${item._id}`, {
       method: "POST",
       headers: {
@@ -49,15 +53,20 @@ const Products = () => {
       .catch((error) => console.log(error));
   };
 
+  const handleClick = (event, watch) => {
+    event.stopPropagation();
+    navigate(`${watch._id}`);
+  };
+
   return (
     <div>
       {!currentWatches ? (
-        <div>LOADING ICON</div>
+        <div><Loading /></div>
       ) : (
         <div>
           <Wrapper>
             {currentWatches.map((watch) => (
-              <ProductWrapper key={watch._id}>
+              <ProductWrapper key={watch._id} onClick={(e) => handleClick(e, watch)}>
                 <div>
                   <ProductImg
                     src={watch.imageSrc}
@@ -68,7 +77,9 @@ const Products = () => {
                 <ProductInfo>
                   <h4>{watch.name}</h4>
                   <p>{watch.price}</p>
-                  <button onClick={(e) => handleSubmit(e, watch)}>
+                  <button
+                  disabled={watch.numInStock === 0} 
+                  onClick={(e) => handleSubmit(e, watch)}>
                     Add to Cart
                   </button>
                 </ProductInfo>
