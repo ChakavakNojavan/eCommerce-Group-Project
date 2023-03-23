@@ -8,11 +8,13 @@ import HomePage from "./Homepage";
 import Products from "./Products";
 import Cart from "./ShoppingCart";
 import Affiliates from "./Affiliates";
+import GlobalStyles from "../GlobalStyles";
 
 const App = () => {
   return (
     //all the routes can change, I just put them as place holders, as well as the elements!
     <BrowserRouter>
+      <GlobalStyles />
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />

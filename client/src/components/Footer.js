@@ -12,7 +12,9 @@ const Footer = () => {
     <Wrapper>
       <div>
         <CompanyInfoContainer>
-          <CompanyTitle>CHRONEOS</CompanyTitle>
+          <CompanyTitle>
+            <p>CHRONEOS</p>
+          </CompanyTitle>
           <li>support@chroneos.com</li>
           <li>+1 844 420 6969</li>
           <li>7AM - 4PM, CET Mon - Fri</li>
@@ -34,7 +36,9 @@ const Footer = () => {
       </div>
       <div>
         <InfoContainer>
-          <Title>CHRONEOS</Title>
+          <Title>
+            <p>CHRONEOS</p>
+          </Title>
           <NavLinks to="/about">
             <li>Our Story</li>
           </NavLinks>

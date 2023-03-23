@@ -9486,16 +9486,6 @@ react-error-overlay@6.0.9, react-error-overlay@^6.0.11:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
   integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
 
-react-icons-context@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/react-icons-context/-/react-icons-context-2.0.2.tgz#c1f53948c5cd9208f5107199697daa573c2bd59e"
-  integrity sha512-TjtflGRBLMGFZbb9FIlbhchRtsEY4JP9avECiurX57sOG252UHL9Y3uGUL9ji5kHsu7YtBky/cxIDkWLSSsLIQ==
-  dependencies:
-    "@emotion/react" "^11.4.0"
-    "@emotion/styled" "^11.3.0"
-    "@material-ui/styles" "^5.0.0-beta.2"
-    styled-components "^5.3.0"
-
 react-icons-kit@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-icons-kit/-/react-icons-kit-2.0.0.tgz#9d605c687a79422705a863b5cbcf36b9892a3cc9"
