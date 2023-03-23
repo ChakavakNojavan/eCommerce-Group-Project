@@ -1,6 +1,6 @@
 import React from "react";
-import { IconContext } from "react-icon-context";
-import { FiLoader } from "react-icon";
+import { IconContext } from "react-icons";
+import { FiLoader } from "react-icons/fi";
 
 import styled, { keyframes } from "styled-components";
 
@@ -13,7 +13,7 @@ const rotate = keyframes`
 }
 `;
 
-export const Loading = () => {
+const Loading = () => {
   return (
     <IconDiv>
       <IconContext.Provider value={{ size: "2rem " }}>
@@ -29,7 +29,9 @@ const IconDiv = styled.div`
   top: 45;
   animation: ${rotate} 2s linear infinite;
   opacity: 0, 5;
-  width: 60vw;
+  font-size:15em;
   display: flex;
   justify-content: center;
 `;
+
+export default Loading;

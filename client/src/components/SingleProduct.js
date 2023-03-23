@@ -7,6 +7,7 @@ import { useEffect } from "react";
 const SingleProduct = () => {
     const {_id} = useParams()
     const [watch, setWatch] =  useState()
+    const [cart, setCart] = useState([]);
 
     useEffect( () => {
         fetch(`/api/products/${_id}`)
@@ -19,6 +20,27 @@ const SingleProduct = () => {
                 console.log(error)
             })
     }, [])
+
+const handleSubmit = (event, item) => {
+    event.preventDefault();
+    event.stopPropagation();
+    fetch(`/api/cart/${item._id}`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    //   body: JSON.stringify(item),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setCart([...cart, data]);
+      })
+      .catch((error) => console.log(error));
+  };
 
 return (
     <div>
@@ -39,7 +61,11 @@ return (
         <Stock>Stock: {watch.numInStock}</Stock>
         <Category>Category: {watch.category}</Category>
         <p>This is the best watch on the market I promise you. It can even tell the time when you are asleep</p>
-        <AddToCart>Add to cart</AddToCart>
+        <AddToCart
+        disabled={watch.numInStock === 0} 
+        onClick={(e) => handleSubmit(e, watch)}>
+        Add to cart
+        </AddToCart>
     </InfoSection>
     
     </Wrapper>
