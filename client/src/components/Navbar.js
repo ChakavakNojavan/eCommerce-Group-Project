@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
+import WatchSearch from "./Search";
 
 // import Searchbar from "./Searchbar";
 // import logo from "./assets/logo.png";
@@ -13,7 +14,7 @@ const Navbar = () => {
         <NavLinkItem to="/">
           <img src="chroneos.png" alt="" />
         </NavLinkItem>
-        <input type="text" />
+        <WatchSearch />
         <NavLinkItem to="/">
           <h2>Home</h2>
         </NavLinkItem>
