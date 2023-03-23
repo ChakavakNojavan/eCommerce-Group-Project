@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
+import Loading from "./Loading";
 
 
 const SingleProduct = () => {
@@ -45,9 +46,7 @@ const handleSubmit = (event, item) => {
 return (
     <div>
         {!watch
-        ?(<div>
-            LOADING ICON
-        </div>)
+        ?(<Loading/>)
         :(
             <Wrapper>
 

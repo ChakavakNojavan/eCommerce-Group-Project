@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Loading from "./Loading";
 
 const HomePage = () => {
   const [products, setProducts] = useState();
@@ -20,7 +21,7 @@ const HomePage = () => {
   return (
     <>
       {!products ? (
-        <h2>Loading</h2>
+        <Loading/>
       ) : (
         <>
           <BackgroundDiv>
@@ -54,7 +55,7 @@ const HomePage = () => {
 };
 
 const BackgroundDiv = styled.div`
-  background-image: url("desert.jpg");
+  background-image: url("/desert.jpg");
   background-size: cover;
   height: 28em;
   display: flex;

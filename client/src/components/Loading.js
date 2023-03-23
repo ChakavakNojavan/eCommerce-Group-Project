@@ -15,11 +15,13 @@ const rotate = keyframes`
 
 const Loading = () => {
   return (
-    <IconDiv>
-      <IconContext.Provider value={{ size: "2rem " }}>
-        <FiLoader />
-      </IconContext.Provider>
-    </IconDiv>
+    <LoadingDiv>
+      <IconDiv>
+        <IconContext.Provider value={{ size: "2rem " }}>
+          <FiLoader />
+        </IconContext.Provider>
+      </IconDiv>
+    </LoadingDiv>
   );
 };
 
@@ -29,9 +31,13 @@ const IconDiv = styled.div`
   top: 45;
   animation: ${rotate} 2s linear infinite;
   opacity: 0, 5;
-  font-size:15em;
+  font-size: 15em;
   display: flex;
   justify-content: center;
 `;
-
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+`;
 export default Loading;
