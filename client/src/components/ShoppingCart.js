@@ -42,6 +42,7 @@ const Button = styled.button`
   border: none;
   border-radius: 3px;
   padding: 0.5rem 1rem;
+  margin: 0 1rem;
   cursor: pointer;
   &:hover {
     background-color: #005fa3;
@@ -54,6 +55,12 @@ const IncrementButton = styled(Button)`
 const DecrementButton = styled(Button)`
   margin-right: 0.5rem;
 `;
+const TotalPrice = styled.div`
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+`;
+
 const BASE = "http://localhost:4000/api";
 
 const api = {
@@ -76,6 +83,7 @@ const Cart = () => {
 
   useEffect(() => {
     api.getCart().then((data) => {
+      console.log("Cart data:", data);
       dispatch({ type: "SET_CART", cart: data });
     });
   }, []);
@@ -104,6 +112,11 @@ const Cart = () => {
     await api.emptyCart();
     dispatch({ type: "EMPTY_CART" });
   };
+  const totalPrice = cart.reduce(
+    (total, item) =>
+      total + parseFloat(item.price.replace("$", "")) * item.quantity,
+    0
+  );
 
   return (
     <Container>
@@ -111,7 +124,7 @@ const Cart = () => {
         <CartItem key={item._id}>
           <ItemInfo>
             <ItemName>{item.name}</ItemName>
-            <ItemPrice>${item.price.toFixed(2)}</ItemPrice>
+            <ItemPrice>{item.price}</ItemPrice>
           </ItemInfo>
           <QuantityControl>
             <span>Quantity:</span>
@@ -136,6 +149,8 @@ const Cart = () => {
           </QuantityControl>
         </CartItem>
       ))}
+      <TotalPrice>Total: ${totalPrice}</TotalPrice>
+      <Button>Checkout</Button>
       <Button onClick={emptyCart}>Empty Cart</Button>
     </Container>
   );
