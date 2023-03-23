@@ -1,8 +1,19 @@
-module.exports = (itemsCollection, cartCollection) => {
+module.exports = (itemsCollection, cartCollection, brandCollection) => {
   const viewProducts = async (req, res) => {
     console.log("Handling request to view products...");
     try {
       const items = await itemsCollection.find().toArray();
+      console.log("Retrieved items:", items);
+      res.json(items);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Error retrieving products." });
+    }
+  };
+  const viewCompanies = async (req, res) => {
+    console.log("Handling request to view products...");
+    try {
+      const items = await brandCollection.find().toArray();
       console.log("Retrieved items:", items);
       res.json(items);
     } catch (err) {
@@ -37,11 +48,16 @@ module.exports = (itemsCollection, cartCollection) => {
       res.status(404).json({ message: "Product not found." });
       return;
     }
+
     const cartItem = await cartCollection.findOne({ _id: id });
 
     if (cartItem) {
-      await cartCollection.updateOne({ _id: id }, { $inc: { quantity: 1 } });
-      res.status(201).json({ ...cartItem, quantity: cartItem.quantity + 1 });
+      if (cartItem.quantity < item.quantity) {
+        await cartCollection.updateOne({ _id: id }, { $inc: { quantity: 1 } });
+        res.status(201).json({ ...cartItem, quantity: cartItem.quantity + 1 });
+      } else {
+        res.status(400).json({ message: "Maximum quantity reached." });
+      }
     } else {
       const newItem = { ...item, quantity: 1 };
       await cartCollection.insertOne(newItem);
@@ -78,8 +94,9 @@ module.exports = (itemsCollection, cartCollection) => {
   const updateQuantity = async (req, res) => {
     const id = parseInt(req.params.id);
     const { quantity } = req.body;
+    const item = await itemsCollection.findOne({ _id: id });
 
-    if (isNaN(quantity) || quantity < 0) {
+    if (isNaN(quantity) || quantity < 0 || (item && quantity > item.quantity)) {
       res.status(400).json({ message: "Invalid quantity value." });
       return;
     }
@@ -107,5 +124,6 @@ module.exports = (itemsCollection, cartCollection) => {
     emptyShoppingCart,
     deleteSingleProduct,
     updateQuantity,
+    viewCompanies
   };
 };
