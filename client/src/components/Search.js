@@ -1,84 +1,118 @@
-// search.js
+import { useState, useEffect } from "react";
+import styled from "styled-components";
 
-// -------- utility functions -------------
+const WatchSearch = ({ handleSelect }) => {
+  const [watches, setWatches] = useState([]);
+  const [value, setValue] = useState("");
 
-//The code searches through an array of products and returns products that match a search term. It does the following:
+  useEffect(() => {
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        setWatches(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-//Parses the search term into individual words
-//Searches for each word in the product data
-//Returns products that match all search words
+  const filteredWatches = watches.filter((watch) => {
+    return watch.name.toLowerCase().includes(value.toLowerCase());
+  });
 
-//It improves search accuracy by:
-
-//Removing punctuation and capitalization
-//Searching in multiple fields (name, price, etc.)
-//Intersecting the results of searching for each word to find matches that contain all words
-
-//The end result is a function called search that takes a search term and list of products, and returns products matching the search term.
-
-// Parse a search string into a word array
-const parseInput = (text) => {
-  // Remove punctuation, convert to lowercase, and split words
-  return text
-    .replace(/[.,;:!?]/g, " ")
-    .toLowerCase()
-    .split(" ")
-    .filter((word) => word !== "");
+  return (
+    <div>
+      <div>
+        <InputField
+          type="text"
+          value={value}
+          onChange={(ev) => setValue(ev.target.value)}
+          onKeyDown={(ev) => {
+            if (ev.key === "Enter") {
+              handleSelect(ev.target.value);
+            }
+          }}
+        />
+        <Clear onClick={() => setValue("")}>Clear </Clear>
+      </div>
+      {value.length > 1 && filteredWatches.length > 0 && (
+        <SuggestionList>
+          <SuggestionDropDown>
+            {filteredWatches.map((watch) => {
+              const index = watch.name
+                .toLowerCase()
+                .indexOf(value.toLowerCase());
+              const firstHalf = watch.name.slice(0, index);
+              const secondHalf = watch.name.slice(index + value.length);
+              return (
+                <Suggestion
+                  key={watch.id}
+                  onClick={() => handleSelect(watch.title)}
+                >
+                  {firstHalf}
+                  <Search>{value}</Search>
+                  {secondHalf}
+                  <Category>
+                    {" "}
+                    <In>in </In> {watch.category}
+                  </Category>
+                </Suggestion>
+              );
+            })}
+          </SuggestionDropDown>
+        </SuggestionList>
+      )}
+    </div>
+  );
 };
 
-const wordInProduct = (word, product) => {
-  const { name, price, body_location, category } = product;
-  if (
-    name.toLowerCase().includes(word) ||
-    price.toString().toLowerCase().includes(word) ||
-    body_location.toLowerCase().includes(word) ||
-    category.toLowerCase().includes(word)
-  ) {
-    return true;
-  }
-  return false;
-};
+const InputField = styled.input`
+    width: 250px;
+    height: 25px;
+    margin-right: 10px;
+    border-radius: 3px;
+    border-width: 0.5px;
+    border-color: rgba(128, 128, 128, 0.5);
+`
 
-const searchProducts = (word, prods) => {
-  return prods.filter((p) => wordInProduct(word, p));
-};
+const Clear = styled.button`
+    width: 50px;
+    background-color: blue;
+    color: white;
+    border-radius: 5px;
+    border-style: none;
+    padding: 5px 10px 5px 10px;
+`
+const SuggestionList = styled.div`
+    width: 300px;
+    max-height: 700px;
+    overflow-y: auto;
+    box-shadow: 0px 3px 12px 6px rgba(0,0,0,0.22);
+    margin-top: 5px;
+`
+const Suggestion = styled.li`
+    padding: 5px;
+    padding: 10px;
+    font-weight: bold;
+    &:hover {
+    background: beige;
+}
+`
+const SuggestionDropDown = styled.ul`
+    padding: 10px;
+`
 
-const intersectionOfResults = (results) => {
-  return results.reduce((intersection, current) => {
-    return intersection.filter((e) =>
-      current.some((item) => e._id === item._id)
-    );
-  }, results[0]);
-};
+const Search = styled.span`
+    font-weight: lighter;
+`
+const Category = styled.span`
+    color: pink;
+`
 
-const narrowSearch = (searchTerm, products) => {
-  const words = parseInput(searchTerm);
-  const results = words.map((word) => searchProducts(word, products));
-  return intersectionOfResults(results);
-};
+const In = styled.span`
+    color: grey;
+    font-style: italic;
+`
 
-// Entry point here
-export const search = (searchTerm, products) => {
-  console.log("calling search");
-  return narrowSearch(searchTerm, products);
-};
-
-//To implement this search functionality in your app, we will:
-
-//Add the search.js file to our project and import the search function.
-//Pass in our product data and the user's search term to the search function.
-//Display the results returned from the search function (the matched products) in our app.
-
-//So it might look something like:
-
-// Import search function
-import { search } from "./search.js";
-
-// Get user search term
-const searchTerm = getSearchTermFromUserInput();
-
-// Search products
-const results = search(searchTerm, products);
-
-// Display results
-displaySearchResults(results);
+export default WatchSearch;
