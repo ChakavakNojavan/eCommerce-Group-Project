@@ -10,6 +10,8 @@ const Products = ({ updateCartItemCount }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [cart, setCart] = useState([]);
   const navigate = useNavigate();
+  const [addedItems, setAddedItems] = useState(new Set());
+  const isItemInCart = (itemId) => addedItems.has(itemId);
 
   useEffect(() => {
     fetch(`/api/products`)
@@ -37,16 +39,28 @@ const Products = ({ updateCartItemCount }) => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      //   body: JSON.stringify(item),
     })
       .then((res) => {
         return res.json();
       })
       .then((data) => {
         console.log(data);
-        setCart([...cart, data]);
+        const existingCartItem = cart.find(
+          (cartItem) => cartItem._id === data._id
+        );
+        if (existingCartItem) {
+          // If the item already exists in the cart, update its quantity
+          existingCartItem.quantity = data.quantity;
+        } else {
+          // If the item is new, add it to the cart
+          setCart([...cart, data]);
+        }
+        setAddedItems(new Set([...addedItems, data._id])); // Update addedItems state
+
         const newCartItemCount =
-          cart.reduce((total, item) => total + item.quantity, 0) + 1;
+          cart.reduce((total, item) => total + item.quantity, 0) +
+          data.quantity -
+          (existingCartItem ? existingCartItem.quantity : 0);
         updateCartItemCount(newCartItemCount);
       })
       .catch((error) => console.log(error));
@@ -79,10 +93,14 @@ const Products = ({ updateCartItemCount }) => {
                   <h4>{watch.name}</h4>
                   <p>{watch.price}</p>
                   <button
-                    disabled={watch.numInStock === 0}
+                    disabled={watch.numInStock === 0 || isItemInCart(watch._id)}
                     onClick={(e) => handleSubmit(e, watch)}
                   >
-                    Add to Cart
+                    {watch.numInStock === 0
+                      ? "Out of Stock"
+                      : isItemInCart(watch._id)
+                      ? "Added to Cart"
+                      : "Add to Cart"}
                   </button>
                 </ProductInfo>
               </ProductWrapper>
