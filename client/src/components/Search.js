@@ -31,13 +31,14 @@ const WatchSearch = () => {
   const handleSelect = (id) => {
     navigate("/products/" + id);
     setHide(true);
-    setValue("")
+    setValue("");
   };
   return (
     <MainWrapper>
       <SearchBox>
         <InputField
           type="text"
+          placeholder="Search"
           value={value}
           onChange={(ev) => searchHandler(ev.target.value)}
           onKeyDown={(ev) => {
@@ -65,10 +66,6 @@ const WatchSearch = () => {
                     {firstHalf}
                     <Search>{value}</Search>
                     {secondHalf}
-                    <Category>
-                      {" "}
-                      <In>in </In> {watch.category}
-                    </Category>
                   </Suggestion>
                 );
               })}
@@ -88,8 +85,10 @@ const SearchBox = styled.div`
   position: relative;
 `;
 const InputField = styled.input`
-  width: 250px;
-  height: 25px;
+  width: 400px;
+  height: 30px;
+  padding-left: 10px;
+  font-size: 15px;
   margin-right: 10px;
   border-radius: 3px;
   border-width: 0.5px;
@@ -97,15 +96,23 @@ const InputField = styled.input`
 `;
 
 const Clear = styled.button`
-  width: 50px;
-  background-color: blue;
+  height: 35px;
+  width: 70px;
+  background-color: #aa726c;
   color: white;
   border-radius: 5px;
   border-style: none;
   padding: 5px 10px 5px 10px;
+  :hover {
+    cursor: pointer;
+  }
+  :active {
+    background-color: var(--color-sunglow);
+  }
 `;
 const SuggestionList = styled.div`
-  width: 300px;
+  border-radius: 5px;
+  width: 410px;
   max-height: 700px;
   overflow-y: auto;
   box-shadow: 0px 3px 12px 6px rgba(0, 0, 0, 0.22);
@@ -122,7 +129,7 @@ const Suggestion = styled.li`
   cursor: pointer;
   transition: all 0.3s;
   &:hover {
-    background: beige;
+    background: var(--color-olivine);
   }
 `;
 const SuggestionDropDown = styled.ul`
@@ -131,14 +138,6 @@ const SuggestionDropDown = styled.ul`
 
 const Search = styled.span`
   font-weight: lighter;
-`;
-const Category = styled.span`
-  color: pink;
-`;
-
-const In = styled.span`
-  color: grey;
-  font-style: italic;
 `;
 
 export default WatchSearch;

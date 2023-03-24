@@ -16,10 +16,10 @@ const Navbar = ({ cartItemCount }) => {
         </NavLinkItem>
         <WatchSearch />
         <NavLinkItem to="/">
-          <h2>Home</h2>
+          <H2>Home</H2>
         </NavLinkItem>
         <NavLinkItem to="/products">
-          <h2>Products</h2>
+          <H2>Products</H2>
         </NavLinkItem>
         <NavLinkItem to="/cart">
           <CartWrapper>
@@ -34,10 +34,17 @@ const Navbar = ({ cartItemCount }) => {
 
 export default Navbar;
 const Cart = styled(FaShoppingCart)`
+  font-size: 20px;
   &:hover {
     color: var(--color-pumpkin);
   }
 `;
+
+const H2 = styled.h2`
+:hover{
+  color: var(--color-pumpkin);
+}
+`
 const NavWrapper = styled.nav`
   display: flex;
   justify-content: space-evenly;
@@ -51,13 +58,17 @@ const NavWrapper = styled.nav`
 const NavLinkItem = styled(NavLink)`
   text-decoration: none;
   color: #233d4d;
+  font-size: 25px;
+
   .active {
     font-weight: bold;
     text-decoration: underline;
   }
   &:hover {
     text-decoration: underline;
+    color: var(--color-pumpkin);
   }
+  
 `;
 const CartWrapper = styled.div`
   position: relative;
