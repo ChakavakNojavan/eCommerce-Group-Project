@@ -81,24 +81,34 @@ const api = {
 
 const initialState = [];
 
-const Cart = () => {
+const Cart = ({ updateCartItemCount }) => {
   const [cart, dispatch] = useReducer(cartReducer, initialState);
 
   useEffect(() => {
     api.getCart().then((data) => {
       console.log("Cart data:", data);
       dispatch({ type: "SET_CART", cart: data });
+      const itemCount = data.reduce((total, item) => total + item.quantity, 0);
+      updateCartItemCount(itemCount);
     });
   }, []);
 
   const addItemToCart = async (_id) => {
     await api.addToCart(_id);
     dispatch({ type: "ADD_ITEM", _id });
+    const updatedCartItemCount =
+      cart.reduce((total, item) => total + item.quantity, 0) + 1;
+    updateCartItemCount(updatedCartItemCount);
   };
 
   const removeItemFromCart = async (_id) => {
     await api.deleteItem(_id);
     dispatch({ type: "REMOVE_ITEM", _id });
+    const updatedCartItemCount = cart.reduce(
+      (total, item) => total + (item._id === _id ? 0 : item.quantity),
+      0
+    );
+    updateCartItemCount(updatedCartItemCount);
   };
 
   const updateItemQuantity = async (_id, quantity, numInStock) => {
@@ -110,11 +120,17 @@ const Cart = () => {
       await api.updateQuantity(_id, quantity);
       dispatch({ type: "UPDATE_QUANTITY", _id, quantity });
     }
+    const updatedCartItemCount = cart.reduce(
+      (total, item) => total + (item._id === _id ? quantity : item.quantity),
+      0
+    );
+    updateCartItemCount(updatedCartItemCount);
   };
 
   const emptyCart = async () => {
     await api.emptyCart();
     dispatch({ type: "EMPTY_CART" });
+    updateCartItemCount(0);
   };
   const totalPrice = cart.reduce(
     (total, item) =>

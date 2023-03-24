@@ -7,7 +7,7 @@ import WatchSearch from "./Search";
 // import Searchbar from "./Searchbar";
 // import logo from "./assets/logo.png";
 
-const Navbar = () => {
+const Navbar = ({ cartItemCount }) => {
   return (
     <>
       <NavWrapper>
@@ -22,7 +22,10 @@ const Navbar = () => {
           <h2>Products</h2>
         </NavLinkItem>
         <NavLinkItem to="/cart">
-          <Cart />
+          <CartWrapper>
+            <Cart />
+            {cartItemCount > 0 && <ItemCount>{cartItemCount}</ItemCount>}
+          </CartWrapper>
         </NavLinkItem>
       </NavWrapper>
     </>
@@ -55,4 +58,16 @@ const NavLinkItem = styled(NavLink)`
   &:hover {
     text-decoration: underline;
   }
+`;
+const CartWrapper = styled.div`
+  position: relative;
+`;
+
+const ItemCount = styled.span`
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  color: red;
+  font-size: 16px;
+  font-weight: bold;
 `;
