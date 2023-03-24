@@ -10,6 +10,12 @@ const Container = styled.div`
   font-family: sans-serif;
 `;
 
+const EmptyCartDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-top: 100px;
+`;
 const CartItem = styled.div`
   display: flex;
   justify-content: space-between;
@@ -125,7 +131,9 @@ const Cart = () => {
   return (
     <>
       {cart.length === 0 ? (
-        <Loading />
+        <EmptyCartDiv>
+          <h2>Your cart looks empty</h2>
+        </EmptyCartDiv>
       ) : (
         <Container>
           {cart.map((item) => {
