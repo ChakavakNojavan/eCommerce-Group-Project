@@ -28,7 +28,7 @@ const Affiliates = () => {
                 <CompanyName>{company.name}</CompanyName>
                 <p>{company.country}</p>
                 <Links to={company.url}>
-                  <p>{company.url}</p>
+                  <CompanyLink>{company.url}</CompanyLink>
                 </Links>
               </IndividualCompany>
             ))}
@@ -44,6 +44,7 @@ const CompanyContainer = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  gap: 30px;
 `;
 
 const IndividualCompany = styled.div`
@@ -53,13 +54,23 @@ const IndividualCompany = styled.div`
 const H2 = styled.h2`
   display: flex;
   justify-content: center;
+  font-size: 40px;
+  margin-top: 30px;
+  margin-bottom: 40px;
 `;
 
 const CompanyName = styled.p`
-  font-weight: bold;
+  font-size: 20px;
 `;
 
 const Links = styled(Link)`
+  text-decoration: none;
+`;
+
+const CompanyLink = styled.p`
   color: var(--color-blue-gray);
+  :hover {
+    color: var(--color-pumpkin);
+  }
 `;
 export default Affiliates;

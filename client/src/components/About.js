@@ -1,6 +1,4 @@
-
 import styled from "styled-components";
-
 
 const About = () => {
   const handleSubmit = (e) => {
@@ -9,21 +7,23 @@ const About = () => {
   return (
     <>
       <Wrapper>
-        <Img src="watch.jpg" alt="a statue of a man selling watches" />
-        <h2>Chroneos</h2>
-        <P>
-          Chroneos is a premier watch shop that offers a diverse collection of
-          high-quality timepieces. Our selection includes classic and elegant
-          styles, as well as modern and sporty watches. Each timepiece is
-          carefully curated for its exceptional craftsmanship, reliability, and
-          style. At Chroneos, we believe that a watch is more than just a
-          timekeeping device. It is a statement of individuality and a
-          reflection of personal taste. We offer a personalized shopping
-          experience, where our knowledgeable staff helps you find the perfect
-          watch that suits your unique needs and preferences. We also provide
-          expert repair and maintenance services to ensure your timepiece
-          functions at its best. Discover the world of watches with Chroneos.
-        </P>
+        <Img src="/watch.jpg" />
+        <Title>Chroneos</Title>
+        <PDiv>
+          <p>
+            Chroneos is a premier watch shop that offers a diverse collection of
+            high-quality timepieces. Our selection includes classic and elegant
+            styles, as well as modern and sporty watches. Each timepiece is
+            carefully curated for its exceptional craftsmanship, reliability,
+            and style. At Chroneos, we believe that a watch is more than just a
+            timekeeping device. It is a statement of individuality and a
+            reflection of personal taste. We offer a personalized shopping
+            experience, where our knowledgeable staff helps you find the perfect
+            watch that suits your unique needs and preferences. We also provide
+            expert repair and maintenance services to ensure your timepiece
+            functions at its best. Discover the world of watches with Chroneos.
+          </p>
+        </PDiv>
         <H2>Contact Us</H2>
         <FormContainer>
           <Form onSubmit={handleSubmit}>
@@ -54,11 +54,18 @@ const Img = styled.img`
   border-radius: 50%;
 `;
 
+const Title = styled.h2`
+  font-size: 40px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+`;
 const H2 = styled.h2`
   margin-bottom: 0;
+  margin-top: 30px;
+  font-size: 20px;
 `;
 
-const P = styled.div`
+const PDiv = styled.div`
   width: 40em;
   line-height: 1.5;
   text-align: center;
@@ -79,6 +86,17 @@ const Textarea = styled.textarea`
 
 const InputSubmit = styled.input`
   margin-top: 1em;
+  padding: 10px;
+  background-color: #aa726c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  :hover {
+    cursor: pointer;
+  }
+  :active {
+    background-color: var(--color-sunglow);
+  }
 `;
 
 export default About;

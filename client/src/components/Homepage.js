@@ -95,10 +95,7 @@ const Price = styled.p`
   margin-top: 10px;
   margin-bottom: 10px;
 `;
-const Span = styled.span`
-  color: #fcca46;
-  font-weight: 600;
-`;
+
 
 const Quote = styled.h1`
   font-style: italic;
@@ -133,5 +130,6 @@ const H2 = styled.h2`
   font-size: 40px;
   display: flex;
   justify-content: center;
+  margin-top: 30px;
 `;
 export default HomePage;
