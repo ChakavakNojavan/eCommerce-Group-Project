@@ -54,14 +54,21 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-p,li,button,span{
+p,li,span{
   font-family: var(--font-all);
   color: var(--color-charcoal);
 }
-
+button{
+  font-family:  var(--font-all);
+}
+label{
+  font-family: var(--font-all)
+}
 
 h1, h2, h3, h4, h5, h6{
   font-family: var(--font-headers);
   color: var(--color-charcoal);
 }
 `;
+
+
