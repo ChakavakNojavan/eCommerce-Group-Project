@@ -10,7 +10,6 @@ import Affiliates from "./Affiliates";
 import GlobalStyles from "../GlobalStyles";
 import { useState } from "react";
 
-
 const App = () => {
   const [cartItemCount, setCartItemCount] = useState(0);
   const updateCartItemCount = (count) => {
@@ -34,7 +33,6 @@ const App = () => {
           element={<Cart updateCartItemCount={updateCartItemCount} />}
         />
         <Route path="/affiliates" element={<Affiliates />} />
-        <Route path="/checkout" element={<Checkout />} />
         <Route path="" element={<h1>404: Oops!</h1>} />
       </Routes>
       <Footer />
