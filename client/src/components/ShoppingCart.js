@@ -22,7 +22,7 @@ const ItemInfo = styled.div``;
 
 const ItemName = styled.div`
   font-weight: bold;
-`;
+`; 
 
 const ItemPrice = styled.div`
   color: #999;
