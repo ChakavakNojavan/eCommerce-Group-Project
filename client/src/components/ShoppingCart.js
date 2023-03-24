@@ -1,7 +1,8 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import { cartReducer } from "./CartReducer";
 import styled from "styled-components";
-import Loading from "./Loading";
+import Checkout from "./Checkout";
+
 const Container = styled.div`
   width: 100%;
   max-width: 600px;
@@ -10,12 +11,6 @@ const Container = styled.div`
   font-family: sans-serif;
 `;
 
-const EmptyCartDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  margin-top: 100px;
-`;
 const CartItem = styled.div`
   display: flex;
   justify-content: space-between;
@@ -27,7 +22,7 @@ const ItemInfo = styled.div``;
 
 const ItemName = styled.div`
   font-weight: bold;
-`;
+`; 
 
 const ItemPrice = styled.div`
   color: #999;
@@ -88,34 +83,34 @@ const api = {
 
 const initialState = [];
 
-const Cart = ({ updateCartItemCount }) => {
+const Cart = () => {
   const [cart, dispatch] = useReducer(cartReducer, initialState);
+  const [showCheckout, setShowCheckout] = useState(false);
 
+  
+  
   useEffect(() => {
     api.getCart().then((data) => {
       console.log("Cart data:", data);
       dispatch({ type: "SET_CART", cart: data });
-      const itemCount = data.reduce((total, item) => total + item.quantity, 0);
-      updateCartItemCount(itemCount);
     });
   }, []);
+  
+  const handleCheckoutClick = () => {
+    setShowCheckout(true);
+  };
 
+  if (showCheckout) {
+    return <Checkout />;
+  }
   const addItemToCart = async (_id) => {
     await api.addToCart(_id);
     dispatch({ type: "ADD_ITEM", _id });
-    const updatedCartItemCount =
-      cart.reduce((total, item) => total + item.quantity, 0) + 1;
-    updateCartItemCount(updatedCartItemCount);
   };
 
   const removeItemFromCart = async (_id) => {
     await api.deleteItem(_id);
     dispatch({ type: "REMOVE_ITEM", _id });
-    const updatedCartItemCount = cart.reduce(
-      (total, item) => total + (item._id === _id ? 0 : item.quantity),
-      0
-    );
-    updateCartItemCount(updatedCartItemCount);
   };
 
   const updateItemQuantity = async (_id, quantity, numInStock) => {
@@ -127,17 +122,11 @@ const Cart = ({ updateCartItemCount }) => {
       await api.updateQuantity(_id, quantity);
       dispatch({ type: "UPDATE_QUANTITY", _id, quantity });
     }
-    const updatedCartItemCount = cart.reduce(
-      (total, item) => total + (item._id === _id ? quantity : item.quantity),
-      0
-    );
-    updateCartItemCount(updatedCartItemCount);
   };
 
   const emptyCart = async () => {
     await api.emptyCart();
     dispatch({ type: "EMPTY_CART" });
-    updateCartItemCount(0);
   };
   const totalPrice = cart.reduce(
     (total, item) =>
@@ -145,70 +134,60 @@ const Cart = ({ updateCartItemCount }) => {
     0
   );
   return (
-    <>
-      {cart.length === 0 ? (
-        <EmptyCartDiv>
-          <h2>Your cart looks empty</h2>
-        </EmptyCartDiv>
-      ) : (
-        <Container>
-          {cart.map((item) => {
-            console.log(`Max quantity for ${item.name}:`, item.numInStock);
+    <Container>
+      {cart.map((item) => {
+        console.log(`Max quantity for ${item.name}:`, item.numInStock);
 
-            return (
-              <CartItem key={item._id}>
-                <ItemInfo>
-                  <ItemName>{item.name}</ItemName>
-                  <ItemPrice>{item.price}</ItemPrice>
-                </ItemInfo>
-                <QuantityControl>
-                  <span>Quantity:</span>
-                  <DecrementButton
-                    onClick={() =>
-                      updateItemQuantity(item._id, item.quantity - 1)
-                    }
-                  >
-                    -
-                  </DecrementButton>
-                  <QuantityInput
-                    type="number"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      updateItemQuantity(item._id, parseInt(e.target.value))
-                    }
-                  />
-                  <IncrementButton
-                    onClick={() =>
-                      updateItemQuantity(
-                        item._id,
-                        item.quantity + 1,
-                        item.numInStock
-                      )
-                    }
-                    disabled={item.quantity >= item.numInStock}
-                  >
-                    +
-                  </IncrementButton>
+        return (
+          <CartItem key={item._id}>
+            <ItemInfo>
+              <ItemName>{item.name}</ItemName>
+              <ItemPrice>{item.price}</ItemPrice>
+            </ItemInfo>
+            <QuantityControl>
+              <span>Quantity:</span>
+              <DecrementButton
+                onClick={() => updateItemQuantity(item._id, item.quantity - 1)}
+              >
+                -
+              </DecrementButton>
+              <QuantityInput
+                type="number"
+                value={item.quantity}
+                onChange={(e) =>
+                  updateItemQuantity(item._id, parseInt(e.target.value))
+                }
+              />
+              <IncrementButton
+                onClick={() =>
+                  updateItemQuantity(
+                    item._id,
+                    item.quantity + 1,
+                    item.numInStock
+                  )
+                }
+                disabled={item.quantity >= item.numInStock}
+              >
+                +
+              </IncrementButton>
 
-                  {item.quantity >= item.numInStock && (
-                    <p style={{ color: "red" }}>
-                      Maximum quantity reached for this item.
-                    </p>
-                  )}
+              {item.quantity >= item.numInStock && (
+                <p style={{ color: "red" }}>
+                  Maximum quantity reached for this item.
+                </p>
+              )}
 
-                  <Button onClick={() => removeItemFromCart(item._id)}>
-                    Remove
-                  </Button>
-                </QuantityControl>
-              </CartItem>
-            );
-          })}
-          <TotalPrice>Total: ${totalPrice.toFixed(2)}</TotalPrice>
-          <Button>Checkout</Button>
-          <Button onClick={emptyCart}>Empty Cart</Button>
-        </Container>
-      )}
-    </>
+              <Button onClick={() => removeItemFromCart(item._id)}>
+                Remove
+              </Button>
+            </QuantityControl>
+          </CartItem>
+        );
+      })}
+      <TotalPrice>Total: ${totalPrice.toFixed(2)}</TotalPrice>
+      <Button onClick={handleCheckoutClick}>Checkout</Button>
+      <Button onClick={emptyCart}>Empty Cart</Button>
+    </Container>
   );
 };
 
