@@ -27,7 +27,10 @@ const App = () => {
           path="/products"
           element={<Products updateCartItemCount={updateCartItemCount} />}
         />
-        <Route path="/products/:_id" element={<SingleProduct />} />
+        <Route
+          path="/products/:_id"
+          element={<SingleProduct updateCartItemCount={updateCartItemCount} />}
+        />
         <Route
           path="/cart"
           element={<Cart updateCartItemCount={updateCartItemCount} />}

@@ -3,155 +3,256 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import Loading from "./Loading";
+import { FaShippingFast } from "react-icons/fa";
+import { FiPhoneCall } from "react-icons/fi";
+import { RiRefund2Line } from "react-icons/ri";
+const SingleProduct = ({ updateCartItemCount }) => {
+  const { _id } = useParams();
+  const [watch, setWatch] = useState();
+  const [cart, setCart] = useState([]);
+  const [addedItems, setAddedItems] = useState(new Set());
+  const isItemInCart = (itemId) => addedItems.has(itemId);
+  useEffect(() => {
+    fetch(`/api/products/${_id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setWatch(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [_id]);
 
-
-const SingleProduct = () => {
-    const {_id} = useParams()
-    const [watch, setWatch] =  useState()
-    const [cart, setCart] = useState([]);
-
-    useEffect( () => {
-        fetch(`/api/products/${_id}`)
-            .then(res => res.json())
-            .then( (data) => {
-                setWatch(data)
-                console.log(data)
-            })
-            .catch( (error) => {
-                console.log(error)
-            })
-    }, [_id])
-
-const handleSubmit = (event, item) => {
+  const handleSubmit = (event, item) => {
     event.preventDefault();
     event.stopPropagation();
     fetch(`/api/cart/${item._id}`, {
       method: "POST",
       headers: {
-        "Accept": "application/json",
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
-    //   body: JSON.stringify(item),
     })
       .then((res) => {
         return res.json();
       })
       .then((data) => {
         console.log(data);
-        setCart([...cart, data]);
+        const existingCartItem = cart.find(
+          (cartItem) => cartItem._id === data._id
+        );
+        if (existingCartItem) {
+          existingCartItem.quantity = data.quantity;
+        } else {
+          setCart([...cart, data]);
+        }
+
+        const newCartItemCount =
+          cart.reduce((total, item) => total + item.quantity, 0) +
+          data.quantity -
+          (existingCartItem ? existingCartItem.quantity : 0);
+        updateCartItemCount(newCartItemCount);
+        setAddedItems(
+          (prevAddedItems) => new Set([...prevAddedItems, item._id])
+        );
       })
       .catch((error) => console.log(error));
   };
 
-return (
+  return (
     <div>
-        {!watch
-        ?(<Loading/>)
-        :(
-            <Wrapper>
+      {!watch ? (
+        <Loading />
+      ) : (
+        <Wrapper>
+          <div>
+            <WatchImg src={watch.imageSrc} />
+          </div>
 
-        <div>
-            <WatchImg src={watch.imageSrc}/>
-        </div>
-
-    <InfoSection>
-        <WatchName>{watch.name}</WatchName>
-        <Price>{watch.price}</Price>
-        <Stock>Stock: {watch.numInStock}</Stock>
-        <Category>Category: {watch.category}</Category>
-        <p>This is the best watch on the market I promise you. It can even tell the time when you are asleep</p>
-        <AddToCart
-        disabled={watch.numInStock === 0} 
-        onClick={(e) => handleSubmit(e, watch)}>
-        Add to cart
-        </AddToCart>
-    </InfoSection>
-    
-    </Wrapper>
-        )}
+          <InfoSection>
+            <WatchName>{watch.name}</WatchName>
+            <Price>{watch.price}</Price>
+            <Category>Category: {watch.category}</Category>
+            <Description>
+              Introducing the ultimate sports watch, designed for both
+              adrenaline-seeking adventurers and dedicated athletes alike. This
+              revolutionary timepiece combines an ultra-durable,
+              scratch-resistant face with a lightweight, water-resistant case
+              and band, ensuring it can endure the toughest conditions. Powered
+              by cutting-edge solar technology and featuring advanced GPS,
+              fitness tracking, and customizable sport modes, this watch is the
+              perfect companion for any outdoor pursuit. Designed for style as
+              well as functionality, the watch offers a variety of
+              interchangeable bands and bezels, allowing you to personalize your
+              timepiece to match your unique taste and personality. Elevate your
+              performance and never miss a beat with this unparalleled
+              accessory.
+            </Description>
+            <AddToCart
+              disabled={watch.numInStock === 0 || isItemInCart(watch._id)}
+              onClick={(e) => handleSubmit(e, watch)}
+            >
+              {watch.numInStock === 0
+                ? "Out of Stock"
+                : isItemInCart(watch._id)
+                ? "Added to Cart"
+                : "Add to Cart"}
+            </AddToCart>
+            <Info2>
+              <Refund></Refund>
+              <Info>
+                <P>Easy Returns:</P>
+                <p>this item can be returned within 30 days.</p>
+              </Info>
+            </Info2>
+            <Info2>
+              <Shipping></Shipping>
+              <Info>
+                <P>Shipping:</P>
+                <p>All of our items ship from Canada.</p>
+              </Info>
+            </Info2>
+            <Info2>
+              <Call></Call>
+              <Info>
+                <P>Need help?</P>
+                <p>
+                  Call our CHRONEOS customer service team at +1 844 420 6969.
+                </p>
+              </Info>
+            </Info2>
+          </InfoSection>
+        </Wrapper>
+      )}
     </div>
-    
-)
-}
+  );
+};
 
-const Stock = styled.p`
-margin:0;
-`
 const Category = styled.p`
-margin:0;
-`
+  margin: 0;
+  padding-bottom: 20px;
+`;
 const Description = styled.p`
-margin: 0;
-`
+  margin: 0;
+  line-height: 1.5;
+`;
 const WatchImg = styled.img`
-height: 500px;
-width: auto;
-border: solid black 1px;
-margin-right: 50px;
-border-radius: 30px;
-:hover {
+  height: 300px;
+  width: auto;
+  margin-right: 50px;
+  margin-left: 200px;
+  :hover {
     transform: scale(1.5);
-}
-`
+  }
+`;
 const Wrapper = styled.div`
-display: flex;
-align-items: center;
-justify-content: center;
-height: 100%;
-
-`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin-top: 50px;
+  margin-right: 200px;
+`;
 const InfoSection = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: center
-`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 const AddToCart = styled.button`
-align-items: center;
-background-color: rgba(240, 240, 240, 0.26);
-border: 1px solid #DFDFDF;
-border-radius: 16px;
-box-sizing: border-box;
-color: #000000;
-cursor: pointer;
-display: flex;
-font-family: Inter, sans-serif;
-font-size: 18px;
-justify-content: center;
-line-height: 28px;
-max-width: 100%;
-padding: 14px 22px;
-text-decoration: none;
-transition: all .2s;
-user-select: none;
--webkit-user-select: none;
-touch-action: manipulation;
-width: 150px;
+  align-items: center;
+  background-color: #aa726c;
+  color: white;
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  font-family: Inter, sans-serif;
+  font-size: 18px;
+  justify-content: center;
+  line-height: 28px;
+  max-width: 100%;
+  padding: 14px 22px;
+  text-decoration: none;
+  transition: all 0.2s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 150px;
+  margin-top: 20px;
 
+  :active,
+  :hover {
+    outline: 0;
+  }
 
-:active,
-:hover {
-outline: 0;
-}
+  :hover {
+    background-color: #aa726c;
+    border-color: rgba(0, 0, 0, 0.19);
+  }
 
-:hover {
-background-color: #FFFFFF;
-border-color: rgba(0, 0, 0, 0.19);
-}
-
-@media (min-width: 100px) 
-{
+  @media (min-width: 100px) {
     font-size: 20px;
     min-width: 200px;
     padding: 14px 16px;
-}
-`
+  }
+  &:disabled {
+    opacity: 50%;
+  }
+`;
 const Price = styled.h2`
-color: red;
-margin-bottom: 50px;
-`
+  color: red;
+  margin-bottom: 50px;
+  font-size: 18px;
+  font-weight: bold;
+`;
 const WatchName = styled.h2`
-margin-bottom: 40px;
-` 
-
-
+  margin-bottom: 40px;
+  font-weight: 900;
+  font-size: 24px;
+`;
+const P = styled.p`
+  font-weight: 900;
+  font-size: 18px;
+  padding: 10px 0;
+`;
+const Shipping = styled(FaShippingFast)`
+  font-size: 20px;
+  margin-right: 10px;
+  height: 30px;
+  width: 30px;
+  display: block;
+  &:hover {
+    color: var(--color-pumpkin);
+  }
+`;
+const Call = styled(FiPhoneCall)`
+  font-size: 20px;
+  margin-right: 10px;
+  height: 30px;
+  width: 30px;
+  display: block;
+  &:hover {
+    color: var(--color-pumpkin);
+  }
+`;
+const Refund = styled(RiRefund2Line)`
+  font-size: 20px;
+  margin-right: 10px;
+  height: 30px;
+  width: 30px;
+  display: block;
+  &:hover {
+    color: var(--color-pumpkin);
+  }
+`;
+const Info = styled.div`
+  flex: 1;
+`;
+const Info2 = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
 export default SingleProduct;
