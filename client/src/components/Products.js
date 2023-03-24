@@ -55,13 +55,15 @@ const Products = ({ updateCartItemCount }) => {
           // If the item is new, add it to the cart
           setCart([...cart, data]);
         }
-        setAddedItems(new Set([...addedItems, data._id])); // Update addedItems state
 
         const newCartItemCount =
           cart.reduce((total, item) => total + item.quantity, 0) +
           data.quantity -
           (existingCartItem ? existingCartItem.quantity : 0);
         updateCartItemCount(newCartItemCount);
+        setAddedItems(
+          (prevAddedItems) => new Set([...prevAddedItems, item._id])
+        );
       })
       .catch((error) => console.log(error));
   };
