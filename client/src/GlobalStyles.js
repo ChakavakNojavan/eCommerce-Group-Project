@@ -6,8 +6,9 @@ export default createGlobalStyle`
   --color-pumpkin: #FE7F2D;
   --color-sunglow: #FCCA46;
   --color-olivine: #A1C181; 
-  --font-headers: 'Tomorrow', sans-serif;
-  --font-all:'Raleway', sans-serif;
+  --font-headers: 'IBM Plex Sans', sans-serif;
+  --font-all:'IBM Plex Serif', serif;
+
 }
 
 html, body, div, span, applet, object, iframe,
@@ -56,6 +57,7 @@ table {
 p,li,button,span{
   font-family: var(--font-all);
 }
+
 h1, h2, h3, h4, h5, h6{
   font-family: var(--font-headers)
 }

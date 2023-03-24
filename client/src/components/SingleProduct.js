@@ -20,7 +20,7 @@ const SingleProduct = () => {
             .catch( (error) => {
                 console.log(error)
             })
-    }, [])
+    }, [_id])
 
 const handleSubmit = (event, item) => {
     event.preventDefault();

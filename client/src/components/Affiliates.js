@@ -27,9 +27,9 @@ const Affiliates = () => {
               <IndividualCompany key={company._id}>
                 <CompanyName>{company.name}</CompanyName>
                 <p>{company.country}</p>
-                <Link to={company.url}>
+                <Links to={company.url}>
                   <p>{company.url}</p>
-                </Link>
+                </Links>
               </IndividualCompany>
             ))}
           </CompanyContainer>
@@ -57,5 +57,9 @@ const H2 = styled.h2`
 
 const CompanyName = styled.p`
   font-weight: bold;
+`;
+
+const Links = styled(Link)`
+  color: var(--color-blue-gray);
 `;
 export default Affiliates;
