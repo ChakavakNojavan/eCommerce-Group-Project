@@ -9,6 +9,7 @@ import Products from "./Products";
 import Cart from "./ShoppingCart";
 import Affiliates from "./Affiliates";
 import GlobalStyles from "../GlobalStyles";
+import Checkout from "./Checkout";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/products/:_id" element={<SingleProduct />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/affiliates" element={<Affiliates />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="" element={<h1>404: Oops!</h1>} />
       </Routes>
       <Footer />

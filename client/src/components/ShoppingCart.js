@@ -1,6 +1,8 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, useState } from "react";
 import { cartReducer } from "./CartReducer";
 import styled from "styled-components";
+import Checkout from "./Checkout";
+
 const Container = styled.div`
   width: 100%;
   max-width: 600px;
@@ -83,14 +85,24 @@ const initialState = [];
 
 const Cart = () => {
   const [cart, dispatch] = useReducer(cartReducer, initialState);
+  const [showCheckout, setShowCheckout] = useState(false);
 
+  
+  
   useEffect(() => {
     api.getCart().then((data) => {
       console.log("Cart data:", data);
       dispatch({ type: "SET_CART", cart: data });
     });
   }, []);
+  
+  const handleCheckoutClick = () => {
+    setShowCheckout(true);
+  };
 
+  if (showCheckout) {
+    return <Checkout />;
+  }
   const addItemToCart = async (_id) => {
     await api.addToCart(_id);
     dispatch({ type: "ADD_ITEM", _id });
@@ -173,7 +185,7 @@ const Cart = () => {
         );
       })}
       <TotalPrice>Total: ${totalPrice.toFixed(2)}</TotalPrice>
-      <Button>Checkout</Button>
+      <Button onClick={handleCheckoutClick}>Checkout</Button>
       <Button onClick={emptyCart}>Empty Cart</Button>
     </Container>
   );
