@@ -56,9 +56,11 @@ table {
 }
 p,li,button,span{
   font-family: var(--font-all);
+  color: var(--color-charcoal);
 }
 
 h1, h2, h3, h4, h5, h6{
-  font-family: var(--font-headers)
+  font-family: var(--font-headers);
+  color: var(--color-charcoal);
 }
 `;

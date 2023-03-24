@@ -10,63 +10,56 @@ import { NavLink } from "react-router-dom";
 const Footer = () => {
   return (
     <Wrapper>
-      <CompanyInfoContainer>
-        <Title>CHRONEOS</Title>
-        <li>support@chroneos.com</li>
-        <li>+1 844 420 6969</li>
-        <li>7AM - 4PM, CET Mon - Fri</li>
+      <Title>CHRONEOS</Title>
+      <TextContainer>
+        <CompanyInfoContainer>
+          <li>support@chroneos.com</li>
+          <li>+1 844 420 6969</li>
+          <li>7AM - 4PM, CET Mon - Fri</li>
+        </CompanyInfoContainer>
         <Icons>
-          <li>
+          <div>
             <Icon size={20} icon={facebook} />
-          </li>
-          <li>
+          </div>
+          <div>
             <Icon size={20} icon={instagram} />
-          </li>
-          <li>
+          </div>
+          <div>
             <Icon size={20} icon={twitter} />
-          </li>
-          <li>
+          </div>
+          <div>
             <Icon size={20} icon={youtubePlay} />
-          </li>
+          </div>
         </Icons>
-      </CompanyInfoContainer>
-
-      <InfoContainer>
-        <p>CHRONEOS</p>
-
-        <NavLinks to="/about">
-          <li>Our Story</li>
-        </NavLinks>
-        <NavLinks to="/affiliates">
-          <li>Affiliates</li>
-        </NavLinks>
-      </InfoContainer>
+        <InfoContainer>
+          <p>CHRONEOS</p>
+          <NavLinks to="/about">
+            <li>Our Story</li>
+          </NavLinks>
+          <NavLinks to="/affiliates">
+            <li>Affiliates</li>
+          </NavLinks>
+        </InfoContainer>
+      </TextContainer>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.footer`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   margin-top: 200px;
+  padding-left: 30px;
+  padding-right: 30px;
 `;
 
 const CompanyInfoContainer = styled.div`
   list-style: none;
   li {
     padding: 7px;
-    color: var(--color-charcoal);
   }
 `;
 
 const InfoContainer = styled.div`
   list-style: none;
-  text-align: right;
-  li {
-    padding: 7px;
-    color: var(--color-charcoal);
-  }
   li:hover {
     cursor: pointer;
     color: var(--color-pumpkin);
@@ -75,18 +68,17 @@ const InfoContainer = styled.div`
 
 const Title = styled.p`
   list-style: none;
-  padding: 10px;
-  font-size: 30px;
-  
-  color: var(--color-charcoal);
+  font-size: 40px;
 `;
 
 const Icons = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 8px;
   width: 200px;
-  li :hover {
+
+  & > *:hover {
     cursor: pointer;
     color: var(--color-pumpkin);
   }
@@ -96,4 +88,9 @@ const NavLinks = styled(NavLink)`
   text-decoration: none;
 `;
 
+const TextContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-charcoal);
+`;
 export default Footer;
