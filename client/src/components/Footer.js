@@ -10,43 +10,37 @@ import { NavLink } from "react-router-dom";
 const Footer = () => {
   return (
     <Wrapper>
-      <div>
-        <CompanyInfoContainer>
-          <CompanyTitle>
-            <p>CHRONEOS</p>
-          </CompanyTitle>
-          <li>support@chroneos.com</li>
-          <li>+1 844 420 6969</li>
-          <li>7AM - 4PM, CET Mon - Fri</li>
-          <Icons>
-            <li>
-              <Icon size={20} icon={facebook} />
-            </li>
-            <li>
-              <Icon size={20} icon={instagram} />
-            </li>
-            <li>
-              <Icon size={20} icon={twitter} />
-            </li>
-            <li>
-              <Icon size={20} icon={youtubePlay} />
-            </li>
-          </Icons>
-        </CompanyInfoContainer>
-      </div>
-      <div>
-        <InfoContainer>
-          <Title>
-            <p>CHRONEOS</p>
-          </Title>
-          <NavLinks to="/about">
-            <li>Our Story</li>
-          </NavLinks>
-          <NavLinks to="/affiliates">
-            <li>Affiliates</li>
-          </NavLinks>
-        </InfoContainer>
-      </div>
+      <CompanyInfoContainer>
+        <Title>CHRONEOS</Title>
+        <li>support@chroneos.com</li>
+        <li>+1 844 420 6969</li>
+        <li>7AM - 4PM, CET Mon - Fri</li>
+        <Icons>
+          <li>
+            <Icon size={20} icon={facebook} />
+          </li>
+          <li>
+            <Icon size={20} icon={instagram} />
+          </li>
+          <li>
+            <Icon size={20} icon={twitter} />
+          </li>
+          <li>
+            <Icon size={20} icon={youtubePlay} />
+          </li>
+        </Icons>
+      </CompanyInfoContainer>
+
+      <InfoContainer>
+        <p>CHRONEOS</p>
+
+        <NavLinks to="/about">
+          <li>Our Story</li>
+        </NavLinks>
+        <NavLinks to="/affiliates">
+          <li>Affiliates</li>
+        </NavLinks>
+      </InfoContainer>
     </Wrapper>
   );
 };
@@ -55,14 +49,14 @@ const Wrapper = styled.footer`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 100px;
+  margin-top: 200px;
 `;
 
 const CompanyInfoContainer = styled.div`
   list-style: none;
   li {
     padding: 7px;
-    color: #559ee1;
+    color: var(--color-charcoal);
   }
 `;
 
@@ -71,28 +65,20 @@ const InfoContainer = styled.div`
   text-align: right;
   li {
     padding: 7px;
-    color: #559ee1;
+    color: var(--color-charcoal);
   }
   li:hover {
     cursor: pointer;
-    color: #fe7f2d;
+    color: var(--color-pumpkin);
   }
 `;
 
-const CompanyTitle = styled.div`
+const Title = styled.p`
   list-style: none;
   padding: 10px;
-  font-size: 18px;
-  font-weight: 700;
-  color: #233d4d;
-`;
-
-const Title = styled.div`
-  list-style: none;
-  padding: 10px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #233d4d;
+  font-size: 30px;
+  
+  color: var(--color-charcoal);
 `;
 
 const Icons = styled.div`
@@ -102,7 +88,7 @@ const Icons = styled.div`
   width: 200px;
   li :hover {
     cursor: pointer;
-    color: #fe7f2d;
+    color: var(--color-pumpkin);
   }
 `;
 

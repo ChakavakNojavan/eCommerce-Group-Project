@@ -35,7 +35,7 @@ const Navbar = ({ cartItemCount }) => {
 export default Navbar;
 const Cart = styled(FaShoppingCart)`
   &:hover {
-    color: #fe7f2d;
+    color: var(--color-pumpkin);
   }
 `;
 const NavWrapper = styled.nav`

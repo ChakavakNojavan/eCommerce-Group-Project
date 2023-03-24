@@ -21,33 +21,27 @@ const HomePage = () => {
   return (
     <>
       {!products ? (
-        <Loading/>
+        <Loading />
       ) : (
         <>
           <BackgroundDiv>
             <Quote>
-              "Stay Connected, Stay Stylish with Our Smart "{" "}
-              <Span>Watches!</Span>
+              "From tracking your progress to powering through workouts, sport
+              watches are the ultimate fitness companion." - AI
             </Quote>
           </BackgroundDiv>
           <H2>Featured Products</H2>
-          <ImageDiv>
-            <ProductDiv onClick={() => handleClick(products[0]._id)}>
-              <img src={products[0].imageSrc} alt="" />
-              <Price>{products[0].price}</Price>
-              <ProductName>{products[0].name}</ProductName>
-            </ProductDiv>
-            <ProductDiv onClick={() => handleClick(products[1]._id)}>
-              <img src={products[1].imageSrc} alt="" />
-              <Price>{products[1].price}</Price>
-              <ProductName>{products[1].name}</ProductName>
-            </ProductDiv>
-            <ProductDiv onClick={() => handleClick(products[2]._id)}>
-              <img src={products[2].imageSrc} alt="" />
-              <Price>{products[2].price}</Price>
-              <ProductName>{products[2].name}</ProductName>
-            </ProductDiv>
-          </ImageDiv>
+          <WrapperDiv>
+            <ImageDiv>
+              {products.slice(0, 6).map((product) => (
+                <ProductDiv onClick={() => handleClick(product._id)}>
+                  <Img src={product.imageSrc} alt="" />
+                  <Price>{product.price}</Price>
+                  <ProductName>{product.name}</ProductName>
+                </ProductDiv>
+              ))}
+            </ImageDiv>
+          </WrapperDiv>
         </>
       )}
     </>
@@ -55,19 +49,28 @@ const HomePage = () => {
 };
 
 const BackgroundDiv = styled.div`
-  background-image: url("/desert.jpg");
+  background-image: url("/watches.jpg");
   background-size: cover;
   height: 28em;
   display: flex;
   position: relative;
   align-items: center;
+  justify-content: flex-start;
+`;
+const WrapperDiv = styled.div`
+  display: flex;
   justify-content: center;
 `;
 const ImageDiv = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  position: relative;
-  top: 1.5em;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 90px;
+  margin-top: 3em;
+`;
+
+const Img = styled.img`
+  border-radius: 40px;
 `;
 
 const ProductDiv = styled.div`
@@ -76,18 +79,21 @@ const ProductDiv = styled.div`
   justify-content: center;
   align-items: center;
   border: 2px solid #233d4d;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 35px;
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
   :hover {
     cursor: pointer;
   }
 `;
 const ProductName = styled.p`
   width: 9em;
+  text-align: center;
 `;
 const Price = styled.p`
-  padding-bottom: 0;
-  margin-bottom: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 const Span = styled.span`
   color: #fcca46;
@@ -96,11 +102,14 @@ const Span = styled.span`
 
 const Quote = styled.h1`
   font-style: italic;
-  font-size: 40px;
+  font-size: 35px;
   font-weight: 100;
   text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.75), 0px 4px 4px rgba(0, 0, 0, 0.5),
     4px 8px 25px #000000;
   color: white;
+  width: 10em;
+  line-height: 1.2;
+  padding-left: 50px;
 
   @media screen and (max-width: 768px) {
     font-size: 30px;
