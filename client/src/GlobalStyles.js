@@ -59,6 +59,7 @@ p,li,button,span{
   color: var(--color-charcoal);
 }
 
+
 h1, h2, h3, h4, h5, h6{
   font-family: var(--font-headers);
   color: var(--color-charcoal);
