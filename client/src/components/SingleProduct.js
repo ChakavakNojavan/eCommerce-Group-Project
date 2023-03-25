@@ -63,7 +63,7 @@ const SingleProduct = ({ cart, dispatch }) => {
             quantity: data.quantity,
           });
         } else {
-          dispatch({ type: "ADD_ITEM", data });
+          dispatch({ type: "ADD_ITEM", item:data });
         }
       })
       .catch((error) => console.log(error));
