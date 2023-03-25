@@ -99,10 +99,10 @@ const SingleProduct = ({ cart, dispatch }) => {
               accessory.
             </Description>
             <AddToCart
-              disabled={watch.numInStock === 0 || isItemInCart(watch._id)}
+              disabled={watch.numInStock <= 0 || isItemInCart(watch._id)}
               onClick={(e) => handleSubmit(e, watch)}
             >
-              {watch.numInStock === 0
+              {watch.numInStock <= 0
                 ? "Out of Stock"
                 : isItemInCart(watch._id)
                 ? "Added to Cart"

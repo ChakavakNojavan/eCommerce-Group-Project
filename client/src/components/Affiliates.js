@@ -5,8 +5,10 @@ import Loading from "./Loading";
 import styled from "styled-components";
 
 const Affiliates = () => {
+  //this is an empty state then when the useEffect is run will store the data fetched from
+  //the api for all companies
   const [companies, setCompanies] = useState();
-
+// a fetch to the api that will setCompanies to data and has a dependency array that is includes the setState 
   useEffect(() => {
     fetch("/api/companies")
       .then((response) => response.json())
@@ -17,6 +19,8 @@ const Affiliates = () => {
 
   return (
     <>
+    {/* if companies is falsy it will render the loading component, if it's truthy it will render a map that will loop over 
+    companies, which contain the information from the server and render the appropriate information */}
       {!companies ? (
         <Loading />
       ) : (

@@ -53,7 +53,7 @@ const App = () => {
         />
         <Route
           path="/checkout"
-          element={<Checkout />}
+          element={<Checkout  dispatch={dispatch} cart={cart}/>}
         />
         <Route path="/affiliates" element={<Affiliates />} />
         <Route path="" element={<h1>404: Oops!</h1>} />

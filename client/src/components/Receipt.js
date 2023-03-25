@@ -25,8 +25,17 @@ const DetailRow = styled.div`
   margin-bottom: 0.5rem;
 `;
 
-const Receipt = ({ customerInfo }) => {
+const Receipt = ({ customerInfo, dispatch, cart }) => {
   const [cartPurchase, setcartPurchase] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const BASE = "http://localhost:4000/api";
+  const api = {
+    emptyCart: () => fetch(`${BASE}/cart`, { method: "DELETE" }),
+  };
+  const emptyCart = async () => {
+    await api.emptyCart();
+    dispatch({ type: "EMPTY_CART" });
+  };
 
   useEffect(() => {
     fetch(`/api/cart`)
@@ -34,12 +43,21 @@ const Receipt = ({ customerInfo }) => {
       .then((data) => {
         setcartPurchase(data);
         console.log(data);
+        emptyCart()
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
+  useEffect(() => {
+    const newTotalPrice = cart.reduce(
+      (total, item) =>
+        total + parseFloat(item.price.replace("$", "")) * item.quantity,
+      0
+    );
+    setTotalPrice(newTotalPrice);
+  }, []);
   return (
     <Container>
       <Title>Receipt</Title>
@@ -69,10 +87,11 @@ const Receipt = ({ customerInfo }) => {
           return (
             <div>
               <p>{item.name}</p>
-              <span>${item.price}</span>
+              <span>{item.price}</span>
             </div>
           );
         })}
+        <p>Total: ${totalPrice.toFixed(2)}</p>
       </DetailRow>
     </Container>
   );

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const About = () => {
+  //This is just a simple function to prevent the default of completing the form
   const handleSubmit = (e) => {
     e.preventDefault();
   };
