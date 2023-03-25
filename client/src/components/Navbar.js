@@ -4,8 +4,6 @@ import { NavLink } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import WatchSearch from "./Search";
 
-// import Searchbar from "./Searchbar";
-// import logo from "./assets/logo.png";
 
 const Navbar = ({ cartItemCount }) => {
   return (
@@ -41,10 +39,10 @@ const Cart = styled(FaShoppingCart)`
 `;
 
 const H2 = styled.h2`
-:hover{
-  color: var(--color-pumpkin);
-}
-`
+  :hover {
+    color: var(--color-pumpkin);
+  }
+`;
 const NavWrapper = styled.nav`
   display: flex;
   justify-content: space-evenly;
@@ -68,7 +66,6 @@ const NavLinkItem = styled(NavLink)`
     text-decoration: underline;
     color: var(--color-pumpkin);
   }
-  
 `;
 const CartWrapper = styled.div`
   position: relative;

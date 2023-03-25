@@ -6,12 +6,21 @@ import Loading from "./Loading";
 import { FaShippingFast } from "react-icons/fa";
 import { FiPhoneCall } from "react-icons/fi";
 import { RiRefund2Line } from "react-icons/ri";
-const SingleProduct = ({ updateCartItemCount }) => {
+
+const SingleProduct = ({ cart, dispatch }) => {
   const { _id } = useParams();
   const [watch, setWatch] = useState();
-  const [cart, setCart] = useState([]);
-  const [addedItems, setAddedItems] = useState(new Set());
-  const isItemInCart = (itemId) => addedItems.has(itemId);
+
+  //this checks to see if an item is already in the cart, if it isn't in the cart it returns false,
+  // if it is it returns, this helps with style rendering for the buttons and text in buttons
+  const isItemInCart = (itemId) => {
+    const foundItem = cart.find((item) => item._id === itemId);
+    if (!foundItem) {
+      return false;
+    }
+    return true;
+  };
+
   useEffect(() => {
     fetch(`/api/products/${_id}`)
       .then((res) => res.json())
@@ -23,7 +32,12 @@ const SingleProduct = ({ updateCartItemCount }) => {
         console.log(error);
       });
   }, [_id]);
-
+  {
+    /*This code handles the click when adding an item to the cart. 
+    It prevents the default behavior of the event and sends a POST request to the API endpoint 
+    to add the item to the cart. It then checks if the item already exists in the cart and 
+    updates its quantity or adds it as a new item in the cart state accordingly. */
+  }
   const handleSubmit = (event, item) => {
     event.preventDefault();
     event.stopPropagation();
@@ -43,19 +57,14 @@ const SingleProduct = ({ updateCartItemCount }) => {
           (cartItem) => cartItem._id === data._id
         );
         if (existingCartItem) {
-          existingCartItem.quantity = data.quantity;
+          dispatch({
+            type: "UPDATE_QUANTITY",
+            _id: item.id,
+            quantity: data.quantity,
+          });
         } else {
-          setCart([...cart, data]);
+          dispatch({ type: "ADD_ITEM", data });
         }
-
-        const newCartItemCount =
-          cart.reduce((total, item) => total + item.quantity, 0) +
-          data.quantity -
-          (existingCartItem ? existingCartItem.quantity : 0);
-        updateCartItemCount(newCartItemCount);
-        setAddedItems(
-          (prevAddedItems) => new Set([...prevAddedItems, item._id])
-        );
       })
       .catch((error) => console.log(error));
   };
