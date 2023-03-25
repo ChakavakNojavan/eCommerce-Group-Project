@@ -2,6 +2,7 @@ import React, { useReducer, useEffect, useState } from "react";
 import { cartReducer } from "./CartReducer";
 import styled from "styled-components";
 import Checkout from "./Checkout";
+import { useNavigate } from "react-router";
 
 const LoadingDiv = styled.div`
   display: flex;
@@ -91,14 +92,15 @@ const api = {
 
 const Cart = ({ cart, dispatch }) => {
   const [showCheckout, setShowCheckout] = useState(false);
+  const navigate = useNavigate();
 
   const handleCheckoutClick = () => {
-    setShowCheckout(true);
+    navigate("/checkout")
   };
 
-  if (showCheckout) {
-    return <Checkout />;
-  }
+  // if (showCheckout) {
+  //   return <Checkout />;
+  // }
   const addItemToCart = async (_id) => {
     await api.addToCart(_id);
     dispatch({ type: "ADD_ITEM", _id });

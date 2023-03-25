@@ -22,6 +22,7 @@ const uri = process.env.MONGO_URI;
     cartCollection,
     brandCollection
   );
+  const { updateStock } = require("./handlers2")
   const express = require("express");
   const morgan = require("morgan");
   const cors = require("cors");
@@ -64,6 +65,7 @@ const uri = process.env.MONGO_URI;
       handlers.deleteSingleProduct(req, res)
     )
     .patch("/api/cart/:id", (req, res) => handlers.updateQuantity(req, res))
+    .patch("/update-stock", (req,res) => updateStock(req,res) )
     .listen(PORT, () => console.info(`Listening on port ${PORT}`));
   process.on("SIGINT", async () => {
     console.log("Closing server...");

@@ -10,6 +10,7 @@ import Affiliates from "./Affiliates";
 import GlobalStyles from "../GlobalStyles";
 import { useReducer, useEffect } from "react";
 import { cartReducer } from "./CartReducer";
+import Checkout from "./Checkout";
 
 const App = () => {
 
@@ -49,6 +50,10 @@ const App = () => {
         <Route
           path="/cart"
           element={<Cart cart={cart} dispatch={dispatch} />}
+        />
+        <Route
+          path="/checkout"
+          element={<Checkout />}
         />
         <Route path="/affiliates" element={<Affiliates />} />
         <Route path="" element={<h1>404: Oops!</h1>} />

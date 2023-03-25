@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Receipt from "./Receipt";
 
@@ -38,8 +38,8 @@ const FormButton = styled.button`
 
 const Checkout = () => {
     const [showReceipt, setShowReceipt] = useState(false);
-    
-  
+    const [cart, setCart] = useState(null)
+
     const [customerInfo, setCustomerInfo] = useState({
       fullName: "",
       email: "",
@@ -55,7 +55,26 @@ const Checkout = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setShowReceipt(true);
+        fetch("/update-stock", {
+          method: "PATCH",
+          headers: {
+            Accept: "application/json",
+            "content-Type": "application/json",
+          },
+          body: JSON.stringify({itemsArr: cart}),
+        })
+        .then(res=> res.json())
+        .then( data => console.log("response",data))
       };
+
+    useEffect(() => {
+      fetch("/api/cart")
+      .then(res => res.json())
+      .then(data => {
+        setCart(data)
+        console.log(data)
+      })
+    }, [])
 
   return (
     <>
