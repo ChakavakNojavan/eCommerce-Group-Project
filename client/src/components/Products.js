@@ -5,31 +5,51 @@ import { useEffect } from "react";
 import Loading from "./Loading";
 import { useNavigate } from "react-router-dom";
 
-const Products = ({ updateCartItemCount }) => {
+const Products = ({ cart, dispatch }) => {
+  //these two lines will set the state for watches and currentPage both are used for the navigation
+  //buttons to the next or previous pages
   const [watches, setWatches] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const [cart, setCart] = useState([]);
+  //this is const is to use the useNavigate hook to direct the user to different pages
   const navigate = useNavigate();
-  const [addedItems, setAddedItems] = useState(new Set());
-  const isItemInCart = (itemId) => addedItems.has(itemId);
 
+  //this checks to see if an item is already in the cart, if it isn't in the cart it returns false,
+  // if it is it returns, this helps with style rendering for the buttons and text in buttons
+  const isItemInCart = (itemId) => {
+    const foundItem = cart.find((item) => item._id === itemId);
+    if (!foundItem) {
+      return false;
+    }
+    return true;
+  };
+
+  //this useEffect fetches the information for in api/products all products from the database
+  // and sets the useState for watches to the data within the collection
   useEffect(() => {
     fetch(`/api/products`)
       .then((res) => res.json())
       .then((data) => {
         setWatches(data);
-        console.log(data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
+  //these for lines are used to render the correct amount of watches per page; 48, then calculate the first
+  //and last index and then calculates the current watch so that mapping can occur to render the
+  //appropriate material
   const watchesPerPage = 48;
   const indexOfLastWatch = currentPage * watchesPerPage;
   const indexOfFirstWatch = indexOfLastWatch - watchesPerPage;
   const currentWatches = watches?.slice(indexOfFirstWatch, indexOfLastWatch);
-
+  
+  {
+    /*This code handles the click when adding an item to the cart. 
+    It prevents the default behavior of the event and sends a POST request to the API endpoint 
+    to add the item to the cart. It then checks if the item already exists in the cart and 
+    updates its quantity or adds it as a new item in the cart state accordingly. */
+  }
   const handleSubmit = (event, item) => {
     event.preventDefault();
     event.stopPropagation();
@@ -45,29 +65,23 @@ const Products = ({ updateCartItemCount }) => {
       })
       .then((data) => {
         console.log(data);
+
         const existingCartItem = cart.find(
           (cartItem) => cartItem._id === data._id
         );
         if (existingCartItem) {
-          // If the item already exists in the cart, update its quantity
-          existingCartItem.quantity = data.quantity;
+          dispatch({
+            type: "UPDATE_QUANTITY",
+            _id: item._id,
+            quantity: data.quantity,
+          });
         } else {
-          // If the item is new, add it to the cart
-          setCart([...cart, data]);
+          dispatch({ type: "ADD_ITEM", item: data });
         }
-
-        const newCartItemCount =
-          cart.reduce((total, item) => total + item.quantity, 0) +
-          data.quantity -
-          (existingCartItem ? existingCartItem.quantity : 0);
-        updateCartItemCount(newCartItemCount);
-        setAddedItems(
-          (prevAddedItems) => new Set([...prevAddedItems, item._id])
-        );
       })
       .catch((error) => console.log(error));
   };
-
+  //this handle click will direct the user to the corresponding single product page
   const handleClick = (event, watch) => {
     event.stopPropagation();
     navigate(`${watch._id}`);
@@ -75,6 +89,8 @@ const Products = ({ updateCartItemCount }) => {
 
   return (
     <div>
+      {/* this is checking to see if currentWatches is falsy, if it is, it will render the loading 
+      component, if not it will render the page */}
       {!currentWatches ? (
         <div>
           <Loading />
@@ -82,6 +98,7 @@ const Products = ({ updateCartItemCount }) => {
       ) : (
         <div>
           <Wrapper>
+            {/* this maps over currentWatches to display the specified information */}
             {currentWatches.map((watch) => (
               <ProductWrapper
                 key={watch._id}
@@ -95,9 +112,13 @@ const Products = ({ updateCartItemCount }) => {
                   <h4>{watch.name}</h4>
                   <p>{watch.price}</p>
                   <button
+                  // for this button, we're checking to see if there is the specified item in cart or
+                  // if there is no available stock to disable the button
                     disabled={watch.numInStock === 0 || isItemInCart(watch._id)}
                     onClick={(e) => handleSubmit(e, watch)}
                   >
+                    {/* making use of a ternary operator to render "out of stock" if there is no stock available
+                    to render "Added to cart" if the item is already within the cart or else render "add to cart" */}
                     {watch.numInStock === 0
                       ? "Out of Stock"
                       : isItemInCart(watch._id)
@@ -109,6 +130,8 @@ const Products = ({ updateCartItemCount }) => {
             ))}
           </Wrapper>
           <PageButtons>
+            {/* here the button is disable if the current page is equal to 1, if you click the Prev button, it will subtract
+            the current page -1 and if you click the next button it will add 1 to the current page */}
             <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage(currentPage - 1)}
