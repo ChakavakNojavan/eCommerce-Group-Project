@@ -114,12 +114,12 @@ const Products = ({ cart, dispatch }) => {
                   <button
                   // for this button, we're checking to see if there is the specified item in cart or
                   // if there is no available stock to disable the button
-                    disabled={watch.numInStock === 0 || isItemInCart(watch._id)}
+                    disabled={watch.numInStock <= 0 || isItemInCart(watch._id)}
                     onClick={(e) => handleSubmit(e, watch)}
                   >
                     {/* making use of a ternary operator to render "out of stock" if there is no stock available
                     to render "Added to cart" if the item is already within the cart or else render "add to cart" */}
-                    {watch.numInStock === 0
+                    {watch.numInStock <= 0
                       ? "Out of Stock"
                       : isItemInCart(watch._id)
                       ? "Added to Cart"
