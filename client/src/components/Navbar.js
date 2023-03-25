@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import WatchSearch from "./Search";
 
-
+// Functional component to render navigation bar
 const Navbar = ({ cartItemCount }) => {
   return (
     <>
@@ -31,6 +31,8 @@ const Navbar = ({ cartItemCount }) => {
 };
 
 export default Navbar;
+
+// Styled components for navigation bar
 const Cart = styled(FaShoppingCart)`
   font-size: 20px;
   &:hover {
@@ -60,11 +62,9 @@ const NavLinkItem = styled(NavLink)`
 
   .active {
     font-weight: bold;
-    text-decoration: underline;
   }
   &:hover {
-    text-decoration: underline;
-    color: var(--color-pumpkin);
+    color: #aa726c;
   }
 `;
 const CartWrapper = styled.div`
@@ -74,8 +74,11 @@ const CartWrapper = styled.div`
 const ItemCount = styled.span`
   position: absolute;
   top: -8px;
-  right: -8px;
-  color: red;
-  font-size: 16px;
+  right: 10px;
+  color: white;
+  background-color: red;
+  border-radius: 50%;
+  font-size: 14px;
+  padding: 2px 5px;
   font-weight: bold;
 `;

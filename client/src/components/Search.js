@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
+// WatchSearch Component that renders a search input and a dropdown list of suggestions based on the user input
 const WatchSearch = () => {
   const [watches, setWatches] = useState([]);
   const [value, setValue] = useState("");
   const [hide, setHide] = useState(false);
   const navigate = useNavigate();
 
+  // Fetch the watches data from the API
   useEffect(() => {
     fetch("/api/products")
       .then((res) => res.json())
@@ -20,19 +22,25 @@ const WatchSearch = () => {
       });
   }, []);
 
+  // Filter the watches based on user input
   const filteredWatches = watches.filter((watch) => {
     return watch.name.toLowerCase().includes(value.toLowerCase());
   });
 
+  // Update the value state with user input
   const searchHandler = (value) => {
     setHide(false);
     setValue(value);
   };
+
+  // Navigate to the selected watch's product page and clear the search input
   const handleSelect = (id) => {
     navigate("/products/" + id);
     setHide(true);
     setValue("");
   };
+
+  // Render the search input, clear button, and suggestion dropdown
   return (
     <MainWrapper>
       <SearchBox>
@@ -77,6 +85,9 @@ const WatchSearch = () => {
   );
 };
 
+export default WatchSearch;
+
+//Styled components for search
 const MainWrapper = styled.div`
   position: relative;
 `;
@@ -96,13 +107,13 @@ const InputField = styled.input`
 `;
 
 const Clear = styled.button`
-  height: 35px;
-  width: 70px;
+  height: 30px;
+  width: 60px;
   background-color: #aa726c;
   color: white;
   border-radius: 5px;
   border-style: none;
-  padding: 5px 10px 5px 10px;
+  padding: 3px 7px;
   :hover {
     cursor: pointer;
   }
@@ -139,5 +150,3 @@ const SuggestionDropDown = styled.ul`
 const Search = styled.span`
   font-weight: lighter;
 `;
-
-export default WatchSearch;

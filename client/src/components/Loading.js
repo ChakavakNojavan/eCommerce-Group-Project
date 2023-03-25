@@ -1,18 +1,9 @@
 import React from "react";
 import { IconContext } from "react-icons";
 import { FiLoader } from "react-icons/fi";
-
 import styled, { keyframes } from "styled-components";
 
-const rotate = keyframes`
-0% {
-    transform: rotate(0deg);
-}
-100% {
-    transform: rotate(360deg);
-}
-`;
-
+// Component to render loading icon
 const Loading = () => {
   return (
     <LoadingDiv>
@@ -25,6 +16,17 @@ const Loading = () => {
   );
 };
 
+export default Loading;
+
+// Styled components for loading icon
+const rotate = keyframes`
+0% {
+    transform: rotate(0deg);
+}
+100% {
+    transform: rotate(360deg);
+}
+`;
 const IconDiv = styled.div`
   position: absolute;
   left: 20;
@@ -40,4 +42,3 @@ const LoadingDiv = styled.div`
   justify-content: center;
   padding-top: 40px;
 `;
-export default Loading;

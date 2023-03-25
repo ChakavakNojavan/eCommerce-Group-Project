@@ -3,9 +3,12 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Loading from "./Loading";
 
+// Functional component to render homepage
 const HomePage = () => {
   const [products, setProducts] = useState();
   const navigate = useNavigate();
+
+  // Fetch products data from API endpoint
   useEffect(() => {
     fetch("/api/products")
       .then((response) => response.json())
@@ -14,10 +17,12 @@ const HomePage = () => {
       });
   }, [setProducts]);
 
+  // Function to handle product click event
   const handleClick = (productId) => {
     navigate(`/products/${productId}`);
-    console.log("you clicked me");
   };
+
+  // Render homepage
   return (
     <>
       {!products ? (
@@ -48,6 +53,9 @@ const HomePage = () => {
   );
 };
 
+export default HomePage;
+
+// Styled components for homepage
 const BackgroundDiv = styled.div`
   background-image: url("/watches.jpg");
   background-size: cover;
@@ -60,6 +68,8 @@ const BackgroundDiv = styled.div`
 const WrapperDiv = styled.div`
   display: flex;
   justify-content: center;
+  background-color: rgb(241, 241, 241);
+  padding-bottom: 100px;
 `;
 const ImageDiv = styled.div`
   display: grid;
@@ -78,7 +88,7 @@ const ProductDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 2px solid #233d4d;
+  background-color: white;
   padding: 35px;
   border-radius: 50%;
   width: 300px;
@@ -95,7 +105,6 @@ const Price = styled.p`
   margin-top: 10px;
   margin-bottom: 10px;
 `;
-
 
 const Quote = styled.h1`
   font-style: italic;
@@ -130,6 +139,6 @@ const H2 = styled.h2`
   font-size: 40px;
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  background-color: rgb(241, 241, 241);
+  padding-top: 30px;
 `;
-export default HomePage;
