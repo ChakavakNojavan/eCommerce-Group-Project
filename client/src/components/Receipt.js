@@ -3,28 +3,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const Container = styled.div`
-  margin-top: 2rem;
-  display: block;
-  max-width: 950px;
-  margin: 0 auto;
-  margin-top: 2rem;
-  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
-  padding: 20px 30px;
-  border-radius: 10px;
-  background-color: #fefefe;
-`;
-
-const Title = styled.h2`
-  margin-bottom: 1rem;
-`;
-
-const DetailRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-`;
-
+// Component to render receipt page
 const Receipt = ({ customerInfo, dispatch, cart }) => {
   const [cartPurchase, setcartPurchase] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -32,24 +11,28 @@ const Receipt = ({ customerInfo, dispatch, cart }) => {
   const api = {
     emptyCart: () => fetch(`${BASE}/cart`, { method: "DELETE" }),
   };
+
+  // Function to empty cart after receipt is rendered
   const emptyCart = async () => {
     await api.emptyCart();
     dispatch({ type: "EMPTY_CART" });
   };
 
+  // Fetch cart items data from API endpoint and set state
   useEffect(() => {
     fetch(`/api/cart`)
       .then((res) => res.json())
       .then((data) => {
         setcartPurchase(data);
         console.log(data);
-        emptyCart()
+        emptyCart();
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
+  // Calculate total price of items in cart
   useEffect(() => {
     const newTotalPrice = cart.reduce(
       (total, item) =>
@@ -58,6 +41,8 @@ const Receipt = ({ customerInfo, dispatch, cart }) => {
     );
     setTotalPrice(newTotalPrice);
   }, []);
+
+  // Render receipt
   return (
     <Container>
       <Title>Receipt</Title>
@@ -98,3 +83,26 @@ const Receipt = ({ customerInfo, dispatch, cart }) => {
 };
 
 export default Receipt;
+
+// Styled components for receipt page
+const Container = styled.div`
+  margin-top: 2rem;
+  display: block;
+  max-width: 950px;
+  margin: 0 auto;
+  margin-top: 2rem;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+  padding: 20px 30px;
+  border-radius: 10px;
+  background-color: #fefefe;
+`;
+
+const Title = styled.h2`
+  margin-bottom: 1rem;
+`;
+
+const DetailRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+`;

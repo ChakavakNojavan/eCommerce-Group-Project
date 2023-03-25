@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import Loading from "./Loading";
@@ -36,14 +35,12 @@ const Products = ({ cart, dispatch }) => {
       });
   }, []);
 
-  //these for lines are used to render the correct amount of watches per page; 48, then calculate the first
-  //and last index and then calculates the current watch so that mapping can occur to render the
-  //appropriate material
+  //Pagination logic
   const watchesPerPage = 48;
   const indexOfLastWatch = currentPage * watchesPerPage;
   const indexOfFirstWatch = indexOfLastWatch - watchesPerPage;
   const currentWatches = watches?.slice(indexOfFirstWatch, indexOfLastWatch);
-  
+
   {
     /*This code handles the click when adding an item to the cart. 
     It prevents the default behavior of the event and sends a POST request to the API endpoint 
@@ -97,6 +94,7 @@ const Products = ({ cart, dispatch }) => {
         </div>
       ) : (
         <div>
+          <Title>All Products</Title>
           <Wrapper>
             {/* this maps over currentWatches to display the specified information */}
             {currentWatches.map((watch) => (
@@ -111,20 +109,20 @@ const Products = ({ cart, dispatch }) => {
                 <ProductInfo>
                   <h4>{watch.name}</h4>
                   <p>{watch.price}</p>
-                  <button
-                  // for this button, we're checking to see if there is the specified item in cart or
-                  // if there is no available stock to disable the button
-                    disabled={watch.numInStock <= 0 || isItemInCart(watch._id)}
+                  <AddToCart
+                    // for this button, we're checking to see if there is the specified item in cart or
+                    // if there is no available stock to disable the button
+                    disabled={watch.numInStock === 0 || isItemInCart(watch._id)}
                     onClick={(e) => handleSubmit(e, watch)}
                   >
                     {/* making use of a ternary operator to render "out of stock" if there is no stock available
                     to render "Added to cart" if the item is already within the cart or else render "add to cart" */}
-                    {watch.numInStock <= 0
+                    {watch.numInStock === 0
                       ? "Out of Stock"
                       : isItemInCart(watch._id)
                       ? "Added to Cart"
                       : "Add to Cart"}
-                  </button>
+                  </AddToCart>
                 </ProductInfo>
               </ProductWrapper>
             ))}
@@ -152,37 +150,103 @@ const Products = ({ cart, dispatch }) => {
   );
 };
 
+export default Products;
+
+//styled components
 const ProductWrapper = styled.div`
   width: 25%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  border: solid black 2px;
+  padding-bottom: 10px;
 `;
+
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   max-width: 100vw;
+  margin: 0 200px;
 `;
 const ProductInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 10px 30px;
+  h4 {
+    font-weight: bold; 
+    margin-bottom: 8px; 
+    min-height: 40px; 
+    line-height: 20px;
+    text-align:center;
 `;
 const ProductImg = styled.img`
   height: 175px;
   width: auto;
-  margin-top: 15px;
+  margin-top: 30px;
 `;
 const PageButtons = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  padding-top: 50px;
 
   button {
     margin: 0 5px;
+    align-items: center;
+    background-color: #aa726c;
+    color: white;
+    border: 1px solid #dfdfdf;
+    border-radius: 10px;
+    padding: 5px 10px;
+    &:disabled {
+      opacity: 50%;
+    }
   }
 `;
+const AddToCart = styled.button`
+  align-items: center;
+  background-color: #aa726c;
+  color: white;
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  font-family: Inter, sans-serif;
+  font-size: 10px;
+  justify-content: center;
+  max-width: 100%;
+  text-decoration: none;
+  transition: all 0.2s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 30px;
+  margin-top: 20px;
 
-export default Products;
+  :active,
+  :hover {
+    outline: 0;
+  }
+
+  :hover {
+    background-color: #aa726c;
+    border-color: rgba(0, 0, 0, 0.19);
+  }
+
+  @media (min-width: 100px) {
+    font-size: 16px;
+    min-width: 160px;
+    padding: 10px 12px;
+  }
+  &:disabled {
+    opacity: 50%;
+  }
+`;
+const Title = styled.h1`
+  font-size: 35px;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+`;
