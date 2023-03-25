@@ -3,7 +3,7 @@ module.exports = (itemsCollection, cartCollection, brandCollection) => {
     console.log("Handling request to view products...");
     try {
       const items = await itemsCollection.find().toArray();
-      console.log("Retrieved items:", items);
+      // console.log("Retrieved items:", items);
       res.json(items);
     } catch (err) {
       console.error(err);
@@ -115,6 +115,10 @@ module.exports = (itemsCollection, cartCollection, brandCollection) => {
       res.status(404).json({ message: "Product not found in cart." });
     }
   };
+
+  const updateStock = async (req, res) => {
+    const id = parseInt(req.params.id);
+  }
 
   return {
     viewProducts,
