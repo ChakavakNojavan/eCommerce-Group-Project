@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 export default createGlobalStyle`
+// Define global CSS variables for consistent use throughout the app
 :root{
   --color-blue-gray: #559EE1;
   --color-charcoal: #233D4D;
@@ -10,7 +11,7 @@ export default createGlobalStyle`
   --font-all:'IBM Plex Serif', serif;
 
 }
-
+/* Apply a reset to all HTML elements for consistent styling across browsers */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -36,12 +37,15 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+/* Set the line-height of the body to 1 for consistent spacing */
 body {
 	line-height: 1;
 }
+/* Remove bullet points from lists */
 ol, ul {
 	list-style: none;
 }
+/* Remove quotation marks from blockquotes and quotes */
 blockquote, q {
 	quotes: none;
 }
@@ -50,21 +54,24 @@ q:before, q:after {
 	content: '';
 	content: none;
 }
+/* Remove table borders and spacing */
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+/* Set font-family and color for paragraphs, list items, and spans */
 p,li,span{
   font-family: var(--font-all);
   color: var(--color-charcoal);
 }
+/* Set font-family for buttons and labels */
 button{
   font-family:  var(--font-all);
 }
 label{
   font-family: var(--font-all)
 }
-
+/* Set font-family and color for headings */
 h1, h2, h3, h4, h5, h6{
   font-family: var(--font-headers);
   color: var(--color-charcoal);

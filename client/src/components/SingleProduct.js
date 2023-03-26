@@ -7,6 +7,7 @@ import { FaShippingFast } from "react-icons/fa";
 import { FiPhoneCall } from "react-icons/fi";
 import { RiRefund2Line } from "react-icons/ri";
 
+// SingleProduct function takes `cart` and `dispatch` as props
 const SingleProduct = ({ cart, dispatch }) => {
   const { _id } = useParams();
   const [watch, setWatch] = useState();
@@ -20,7 +21,7 @@ const SingleProduct = ({ cart, dispatch }) => {
     }
     return true;
   };
-
+  // Fetching the single product data from the server
   useEffect(() => {
     fetch(`/api/products/${_id}`)
       .then((res) => res.json())
@@ -63,15 +64,16 @@ const SingleProduct = ({ cart, dispatch }) => {
             quantity: data.quantity,
           });
         } else {
-          dispatch({ type: "ADD_ITEM", item:data });
+          dispatch({ type: "ADD_ITEM", item: data });
         }
       })
       .catch((error) => console.log(error));
   };
-
+  // Render the SingleProduct component
   return (
     <div>
       {!watch ? (
+        // if watch is falsy it will render the loading component. if it's truthy it will render the page
         <Loading />
       ) : (
         <Wrapper>
@@ -99,9 +101,13 @@ const SingleProduct = ({ cart, dispatch }) => {
               accessory.
             </Description>
             <AddToCart
+              // for this button, we're checking to see if there is the specified item in cart or
+              // if there is no available stock to disable the button
               disabled={watch.numInStock <= 0 || isItemInCart(watch._id)}
               onClick={(e) => handleSubmit(e, watch)}
             >
+              {/* making use of a ternary operator to render "out of stock" if there is no stock available
+                    to render "Added to cart" if the item is already within the cart or else render "add to cart" */}
               {watch.numInStock <= 0
                 ? "Out of Stock"
                 : isItemInCart(watch._id)
@@ -138,6 +144,7 @@ const SingleProduct = ({ cart, dispatch }) => {
   );
 };
 
+//styled components
 const Category = styled.p`
   margin: 0;
   padding-bottom: 20px;

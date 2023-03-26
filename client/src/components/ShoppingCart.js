@@ -1,80 +1,11 @@
-import React, { useReducer, useEffect, useState } from "react";
-import { cartReducer } from "./CartReducer";
+import React from "react";
 import styled from "styled-components";
-import Checkout from "./Checkout";
 import { useNavigate } from "react-router";
 
-const LoadingDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 200px;
-`;
-const Container = styled.div`
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 1rem;
-  font-family: sans-serif;
-`;
-
-const CartItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-`;
-
-const ItemInfo = styled.div``;
-
-const ItemName = styled.div`
-  font-weight: bold;
-`;
-
-const ItemPrice = styled.div`
-  color: #999;
-`;
-
-const QuantityControl = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const QuantityInput = styled.input`
-  width: 50px;
-  margin: 0 0.5rem;
-`;
-
-const Button = styled.button`
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  padding: 0.5rem 1rem;
-  margin: 0 1rem;
-  cursor: pointer;
-  &:hover {
-    background-color: #005fa3;
-  }
-`;
-const IncrementButton = styled(Button)`
-  margin-left: 0.5rem;
-  &:disabled {
-    opacity: 0.5;
-  }
-`;
-
-const DecrementButton = styled(Button)`
-  margin-right: 0.5rem;
-`;
-const TotalPrice = styled.div`
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-top: 1rem;
-`;
-
+// API base URL
 const BASE = "http://localhost:4000/api";
 
+// Functions for fetching cart data, adding items, updating quantities, deleting items, and emptying the cart
 const api = {
   getCart: () => fetch(`${BASE}/cart`).then((res) => res.json()),
   addToCart: (_id) => fetch(`${BASE}/cart/${_id}`, { method: "POST" }),
@@ -88,29 +19,25 @@ const api = {
   emptyCart: () => fetch(`${BASE}/cart`, { method: "DELETE" }),
 };
 
-
-
+// Component for rendering the shopping cart
 const Cart = ({ cart, dispatch }) => {
-  const [showCheckout, setShowCheckout] = useState(false);
+  // this is to make use of the useNavigate hook
   const navigate = useNavigate();
-
+  // Click handler for the checkout button
   const handleCheckoutClick = () => {
-    navigate("/checkout")
+    navigate("/checkout");
   };
 
-  // if (showCheckout) {
-  //   return <Checkout />;
-  // }
-  const addItemToCart = async (_id) => {
-    await api.addToCart(_id);
-    dispatch({ type: "ADD_ITEM", _id });
-  };
-
+  //This function remove an item from the cart by sending a DELETE request to the API and using the delete dispatch from the reducer
   const removeItemFromCart = async (_id) => {
     await api.deleteItem(_id);
     dispatch({ type: "REMOVE_ITEM", _id });
   };
 
+  //This function update the quantity of an item in the cart by sending a PATCH request to the API
+  // If the requested quantity is less than zero or greater than the number in stock, return without making any changes
+  // If the requested quantity is zero, remove the item from the cart
+  // Otherwise, update the quantity in the API and in the cart
   const updateItemQuantity = async (_id, quantity, numInStock) => {
     if (quantity < 0) return;
     if (quantity > numInStock) return;
@@ -121,16 +48,18 @@ const Cart = ({ cart, dispatch }) => {
       dispatch({ type: "UPDATE_QUANTITY", _id, quantity });
     }
   };
-
+  //This function empty the whole cart by sending a DELETE request to the API using the EMPTY_CART dispatch from the reducer
   const emptyCart = async () => {
     await api.emptyCart();
     dispatch({ type: "EMPTY_CART" });
   };
+  // Calculate the total price of all items in the cart
   const totalPrice = cart.reduce(
     (total, item) =>
       total + parseFloat(item.price.replace("$", "")) * item.quantity,
     0
   );
+  // Render the cart component
   return (
     <>
       {cart.length === 0 ? (
@@ -140,8 +69,6 @@ const Cart = ({ cart, dispatch }) => {
       ) : (
         <Container>
           {cart.map((item) => {
-            console.log(`Max quantity for ${item.name}:`, item.numInStock);
-
             return (
               <CartItem key={item._id}>
                 <ItemInfo>
@@ -198,5 +125,73 @@ const Cart = ({ cart, dispatch }) => {
     </>
   );
 };
+
+// Styled-components for the loading div, container, cart item, item info, item name,
+// item price, quantity control, quantity input, button, increment button, decrement button, and total price
+const LoadingDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+`;
+const Container = styled.div`
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: sans-serif;
+`;
+
+const CartItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
+const ItemInfo = styled.div``;
+
+const ItemName = styled.div`
+  font-weight: bold;
+`;
+
+const ItemPrice = styled.div`
+  color: #999;
+`;
+
+const QuantityControl = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const QuantityInput = styled.input`
+  width: 50px;
+  margin: 0 0.5rem;
+`;
+
+const Button = styled.button`
+  background-color: #aa726c;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 0.5rem 1rem;
+  margin: 0 1rem;
+  cursor: pointer;
+`;
+const IncrementButton = styled(Button)`
+  margin-left: 0.5rem;
+  &:disabled {
+    opacity: 0.5;
+  }
+`;
+
+const DecrementButton = styled(Button)`
+  margin-right: 0.5rem;
+`;
+const TotalPrice = styled.div`
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+`;
 
 export default Cart;

@@ -175,11 +175,12 @@ const ProductInfo = styled.div`
   align-items: center;
   padding: 10px 30px;
   h4 {
-    font-weight: bold; 
-    margin-bottom: 8px; 
-    min-height: 40px; 
+    font-weight: bold;
+    margin-bottom: 8px;
+    min-height: 40px;
     line-height: 20px;
-    text-align:center;
+    text-align: center;
+  }
 `;
 const ProductImg = styled.img`
   height: 175px;
