@@ -47,37 +47,36 @@ const Receipt = ({ customerInfo, dispatch, cart }) => {
     <Container>
       <Title>Receipt</Title>
       <DetailRow>
-        <strong>Full Name:</strong>
+        <strong>Full Name: </strong>
         <span>{customerInfo.fullName}</span>
       </DetailRow>
       <DetailRow>
-        <strong>Email:</strong>
+        <strong>Email: </strong>
         <span>{customerInfo.email}</span>
       </DetailRow>
       <DetailRow>
-        <strong>Address:</strong>
+        <strong>Address: </strong>
         <span>{customerInfo.address}</span>
       </DetailRow>
       <DetailRow>
-        <strong>City:</strong>
+        <strong>City: </strong>
         <span>{customerInfo.city}</span>
       </DetailRow>
       <DetailRow>
-        <strong>ZIP Code:</strong>
+        <strong>ZIP Code: </strong>
         <span>{customerInfo.zipCode}</span>
       </DetailRow>
       <DetailRow>
-        <strong>Your Items:</strong>
+        <strong>Your Items: </strong>
         {cartPurchase.map((item) => {
           return (
             <div>
-              <p>{item.name}</p>
-              <span>{item.price}</span>
+              <li>{item.name}{" "}{item.price}</li>
             </div>
           );
         })}
-        <p>Total: ${totalPrice.toFixed(2)}</p>
       </DetailRow>
+        <strong>Total: ${totalPrice.toFixed(2)}</strong>
     </Container>
   );
 };
@@ -102,7 +101,5 @@ const Title = styled.h2`
 `;
 
 const DetailRow = styled.div`
-  display: flex;
-  justify-content: space-between;
   margin-bottom: 0.5rem;
 `;
