@@ -27,7 +27,6 @@ const SingleProduct = ({ cart, dispatch }) => {
       .then((res) => res.json())
       .then((data) => {
         setWatch(data);
-        console.log(data);
       })
       .catch((error) => {
         console.log(error);
@@ -53,7 +52,6 @@ const SingleProduct = ({ cart, dispatch }) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         const existingCartItem = cart.find(
           (cartItem) => cartItem._id === data._id
         );

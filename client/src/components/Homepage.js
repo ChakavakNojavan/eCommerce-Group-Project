@@ -39,7 +39,7 @@ const HomePage = () => {
           <WrapperDiv>
             <ImageDiv>
               {products.slice(0, 6).map((product) => (
-                <ProductDiv onClick={() => handleClick(product._id)}>
+                <ProductDiv key={product._id} onClick={() => handleClick(product._id)}>
                   <Img src={product.imageSrc} alt="" />
                   <Price>{product.price}</Price>
                   <ProductName>{product.name}</ProductName>

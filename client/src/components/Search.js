@@ -15,7 +15,6 @@ const WatchSearch = () => {
       .then((res) => res.json())
       .then((data) => {
         setWatches(data);
-        console.log(data);
       })
       .catch((error) => {
         console.log(error);
