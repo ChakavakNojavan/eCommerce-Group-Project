@@ -16,3 +16,8 @@ export const cartReducer = (state, action) => {
       return state;
   }
 };
+
+//This code defines a cartReducer function that handles 
+//state updates for a shopping cart, by adding, removing or 
+//updating the quantity of an item in the cart, emptying the cart, 
+//or returning the current state if none of the actions match.
