@@ -61,7 +61,6 @@ const Products = ({ cart, dispatch }) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
 
         const existingCartItem = cart.find(
           (cartItem) => cartItem._id === data._id

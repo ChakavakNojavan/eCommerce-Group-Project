@@ -38,7 +38,6 @@ const Checkout = ({ dispatch, cart }) => {
       body: JSON.stringify({ itemsArr: cart }),
     })
       .then((res) => res.json())
-      .then((data) => console.log("response", data));
   };
 
   return (

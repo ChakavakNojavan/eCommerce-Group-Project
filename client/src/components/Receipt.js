@@ -24,7 +24,6 @@ const Receipt = ({ customerInfo, dispatch, cart }) => {
       .then((res) => res.json())
       .then((data) => {
         setcartPurchase(data);
-        console.log(data);
         emptyCart();
       })
       .catch((error) => {
@@ -70,7 +69,7 @@ const Receipt = ({ customerInfo, dispatch, cart }) => {
         <strong>Your Items: </strong>
         {cartPurchase.map((item) => {
           return (
-            <div>
+            <div key={item._id}>
               <li>{item.name}{" "}{item.price}</li>
             </div>
           );
