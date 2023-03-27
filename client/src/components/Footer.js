@@ -7,6 +7,10 @@ import { twitter } from "react-icons-kit/fa/twitter";
 import { youtubePlay } from "react-icons-kit/fa/youtubePlay";
 import { NavLink } from "react-router-dom";
 
+
+//This code defines a functional component called Footer that returns 
+//a styled container containing the company's title, contact information, 
+//social media icons, and navigation links.
 const Footer = () => {
   return (
     <Wrapper>
